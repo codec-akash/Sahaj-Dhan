@@ -34,3 +34,5 @@ class LoadPaginationStockDeal extends StockEvent {
   @override
   List<Object> get props => [skip, isEndOfList];
 }
+
+class LoadStockDealFilters extends StockEvent {}

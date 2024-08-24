@@ -11,4 +11,6 @@ class ApiUrls {
   // end- points --
   static const String getBulkDeals =
       "/v1/bulk-deals?tradeTypes=BUY,SELL&skip=0&limit=20&executedAt.comparison=equals&executedAt.values=2024-08-07";
+
+  static const String getDealsFilter = "/v1/bulk-deals/filters";
 }

@@ -13,7 +13,7 @@ class ApiProvider {
     try {
       var response = await nonAuthedClient.get(url, params: queryParam);
       Map<String, dynamic> res = ApiResponseHandler.output(response);
-      return res['result'];
+      return res;
     } catch (e) {
       return ApiResponseHandler.outputError(urlString);
     }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sahaj_dhan/blocs/stocks_bloc/stock_event.dart';
+import 'package:sahaj_dhan/models/deal_filter_model.dart';
 import 'package:sahaj_dhan/models/stock_deal_model.dart';
 
 class StockState extends Equatable {
@@ -40,4 +41,10 @@ class PaginatedStockDealsLoaded extends StockState {
   final StockDeals stockDeals;
 
   const PaginatedStockDealsLoaded({required this.stockDeals});
+}
+
+class StockDealFilterLoaded extends StockState {
+  final SymbolFilter dealFilter;
+
+  const StockDealFilterLoaded({required this.dealFilter});
 }

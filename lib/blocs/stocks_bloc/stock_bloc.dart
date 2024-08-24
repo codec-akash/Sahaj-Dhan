@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sahaj_dhan/blocs/stocks_bloc/stock_event.dart';
 import 'package:sahaj_dhan/blocs/stocks_bloc/stock_state.dart';
+import 'package:sahaj_dhan/models/deal_filter_model.dart';
 import 'package:sahaj_dhan/models/stock_deal_model.dart';
 import 'package:sahaj_dhan/repository/stock_repository.dart';
 
@@ -12,6 +13,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   StockBloc() : super(Uninitialized()) {
     on<LoadStockDeals>(_loadStockDeals);
     on<LoadPaginationStockDeal>(_loadPaginatedStockDeals);
+    on<LoadStockDealFilters>(_loadDealFilter);
   }
 
   Future<void> _loadStockDeals(
@@ -45,6 +47,17 @@ class StockBloc extends Bloc<StockEvent, StockState> {
 
       emit(PaginatedStockDealsLoaded(
           stockDeals: loadedStockDeals ?? stockDeals));
+    } catch (e) {
+      emit(StockStateFailed(currentEvent: event, errorMsg: e.toString()));
+    }
+  }
+
+  Future<void> _loadDealFilter(
+      LoadStockDealFilters event, Emitter<StockState> emit) async {
+    try {
+      emit(StockStateLoading(currentEvent: event));
+      SymbolFilter dealFilter = await stockRepository.loadDealFilter();
+      emit(StockDealFilterLoaded(dealFilter: dealFilter));
     } catch (e) {
       emit(StockStateFailed(currentEvent: event, errorMsg: e.toString()));
     }
