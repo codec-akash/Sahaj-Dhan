@@ -22,10 +22,15 @@ class StockRepository {
     }
   }
 
-  Future<StockDeals> getStockDealListPaginated(int skip) async {
+  Future<StockDeals> getStockDealListPaginated(int skip,
+      {String? tradeType, String? symbolName, String? executedDate}) async {
     var response = await apiProvider.get(ApiUrls.getBulkDeals, queryParam: {
       "skip": skip,
       "limit": 20,
+      if (tradeType != null) "tradeTypes": tradeType,
+      if (symbolName != null) "symbols": symbolName,
+      if (executedDate != null) "executedAt.comparison": "equals",
+      if (executedDate != null) "executedAt.values": executedDate,
     });
 
     try {

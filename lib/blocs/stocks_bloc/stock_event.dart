@@ -25,10 +25,16 @@ class LoadStockDeals extends StockEvent {
 class LoadPaginationStockDeal extends StockEvent {
   final int skip;
   final bool isEndOfList;
+  final String? symbolName;
+  final String? tradeTypes;
+  final DateTime? executedAt;
 
   const LoadPaginationStockDeal({
     required this.skip,
     required this.isEndOfList,
+    this.symbolName,
+    this.tradeTypes,
+    this.executedAt,
   });
 
   @override

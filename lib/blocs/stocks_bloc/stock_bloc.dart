@@ -4,6 +4,7 @@ import 'package:sahaj_dhan/blocs/stocks_bloc/stock_state.dart';
 import 'package:sahaj_dhan/models/deal_filter_model.dart';
 import 'package:sahaj_dhan/models/stock_deal_model.dart';
 import 'package:sahaj_dhan/repository/stock_repository.dart';
+import 'package:sahaj_dhan/utils/date_utils.dart';
 
 class StockBloc extends Bloc<StockEvent, StockState> {
   StockRepository stockRepository = StockRepository();
@@ -30,12 +31,17 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   Future<void> _loadPaginatedStockDeals(
       LoadPaginationStockDeal event, Emitter<StockState> emit) async {
     try {
-      loadedStockDeals = null;
       StockDeals stockDeals = StockDeals(result: []);
       if (!event.isEndOfList) {
         emit(StockStateLoading(currentEvent: event));
-        stockDeals =
-            await stockRepository.getStockDealListPaginated(event.skip);
+        stockDeals = await stockRepository.getStockDealListPaginated(
+          event.skip,
+          tradeType: event.tradeTypes,
+          symbolName: event.symbolName,
+          executedDate: event.executedAt != null
+              ? DateTimeUtils.yearMonthDateToString(event.executedAt!)
+              : null,
+        );
 
         if (loadedStockDeals == null) {
           loadedStockDeals = stockDeals;

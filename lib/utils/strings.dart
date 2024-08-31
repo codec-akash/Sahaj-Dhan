@@ -9,8 +9,8 @@ class ApiUrls {
   static const String baseURL = "https://sahaj-backend.onrender.com";
 
   // end- points --
-  static const String getBulkDeals =
-      "/v1/bulk-deals?tradeTypes=BUY,SELL&skip=0&limit=20&executedAt.comparison=equals&executedAt.values=2024-08-07";
+  static const String getBulkDeals = "/v1/bulk-deals";
+  // "/v1/bulk-deals?skip=0&limit=20&executedAt.comparison=equals&executedAt.values=2024-08-07";
 
   static const String getDealsFilter = "/v1/bulk-deals/filters";
 }
