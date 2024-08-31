@@ -115,10 +115,11 @@ class _StockDealMoreState extends State<StockDealMore> {
                     }
                     if (state is PaginatedStockDealsLoaded) {
                       setState(() {
-                        stockDeals.result = state.stockDeals.result;
+                        stockDeals.result!
+                            .addAll(state.stockDeals.result ?? []);
                         stockDeals.isEndOfList = state.stockDeals.isEndOfList;
                         if (state.stockDeals.result != null) {
-                          for (var element in stockDeals.result!) {
+                          for (var element in state.stockDeals.result!) {
                             String dealDate = element.executedAt!;
                             if (!dealByDate.containsKey(dealDate)) {
                               dealByDate[dealDate] = [];

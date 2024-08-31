@@ -51,8 +51,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
         }
       }
 
-      emit(PaginatedStockDealsLoaded(
-          stockDeals: loadedStockDeals ?? stockDeals));
+      emit(PaginatedStockDealsLoaded(stockDeals: stockDeals));
     } catch (e) {
       emit(StockStateFailed(currentEvent: event, errorMsg: e.toString()));
     }
