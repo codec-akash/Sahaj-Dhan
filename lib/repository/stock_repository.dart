@@ -22,15 +22,25 @@ class StockRepository {
     }
   }
 
-  Future<StockDeals> getStockDealListPaginated(int skip,
-      {String? tradeType, String? symbolName, String? executedDate}) async {
+  Future<StockDeals> getStockDealListPaginated(
+    int skip, {
+    String? tradeType,
+    String? symbolName,
+    String? clientName,
+    String? executedDate,
+    String? endDate,
+  }) async {
     var response = await apiProvider.get(ApiUrls.getBulkDeals, queryParam: {
       "skip": skip,
       "limit": 20,
       if (tradeType != null) "tradeTypes": tradeType,
       if (symbolName != null) "symbols": symbolName,
-      if (executedDate != null) "executedAt.comparison": "equals",
-      if (executedDate != null) "executedAt.values": executedDate,
+      if (clientName != null) "clientNames": clientName,
+      if (executedDate != null)
+        "executedAt.comparison": endDate == null ? "equals" : "between",
+      if (executedDate != null)
+        "executedAt.values":
+            endDate == null ? executedDate : "$executedDate,$endDate",
     });
 
     try {
@@ -45,7 +55,7 @@ class StockRepository {
     }
   }
 
-  Future<SymbolFilter> loadDealFilter() async {
+  Future<Filters> loadDealFilter() async {
     var response = await apiProvider.get(ApiUrls.getDealsFilter);
 
     try {
@@ -53,7 +63,7 @@ class StockRepository {
         throw response['error'];
       }
 
-      SymbolFilter dealFilter = SymbolFilter.fromJson(response['result'][0]);
+      Filters dealFilter = Filters.fromJson(response);
 
       return dealFilter;
     } catch (e) {

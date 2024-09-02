@@ -44,7 +44,7 @@ class PaginatedStockDealsLoaded extends StockState {
 }
 
 class StockDealFilterLoaded extends StockState {
-  final SymbolFilter dealFilter;
+  final Filters dealFilter;
 
   const StockDealFilterLoaded({required this.dealFilter});
 }

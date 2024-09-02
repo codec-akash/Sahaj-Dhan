@@ -10,6 +10,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   StockRepository stockRepository = StockRepository();
 
   StockDeals? loadedStockDeals;
+  Filters? filter;
 
   StockBloc() : super(Uninitialized()) {
     on<LoadStockDeals>(_loadStockDeals);
@@ -38,8 +39,12 @@ class StockBloc extends Bloc<StockEvent, StockState> {
           event.skip,
           tradeType: event.tradeTypes,
           symbolName: event.symbolName,
+          clientName: event.clientName,
           executedDate: event.executedAt != null
               ? DateTimeUtils.yearMonthDateToString(event.executedAt!)
+              : null,
+          endDate: event.endDate != null
+              ? DateTimeUtils.yearMonthDateToString(event.endDate!)
               : null,
         );
 
@@ -61,8 +66,8 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       LoadStockDealFilters event, Emitter<StockState> emit) async {
     try {
       emit(StockStateLoading(currentEvent: event));
-      SymbolFilter dealFilter = await stockRepository.loadDealFilter();
-      emit(StockDealFilterLoaded(dealFilter: dealFilter));
+      filter ??= await stockRepository.loadDealFilter();
+      emit(StockDealFilterLoaded(dealFilter: filter!));
     } catch (e) {
       emit(StockStateFailed(currentEvent: event, errorMsg: e.toString()));
     }

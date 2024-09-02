@@ -6,6 +6,7 @@ import 'package:sahaj_dhan/blocs/stocks_bloc/stock_event.dart';
 import 'package:sahaj_dhan/blocs/stocks_bloc/stock_state.dart';
 import 'package:sahaj_dhan/models/deal_filter_model.dart';
 import 'package:sahaj_dhan/models/stock_deal_model.dart';
+import 'package:sahaj_dhan/screens/filters/filter_list_main.dart';
 import 'package:sahaj_dhan/screens/homescreen/deal_card.dart';
 import 'package:sahaj_dhan/utils/date_utils.dart';
 import 'package:sahaj_dhan/utils/text_theme.dart';
@@ -20,6 +21,9 @@ class StockDealMore extends StatefulWidget {
 class _StockDealMoreState extends State<StockDealMore> {
   final ScrollController _scrollController = ScrollController();
 
+  final TextEditingController clientController = TextEditingController();
+  final TextEditingController symbolController = TextEditingController();
+
   List<String> buyType = ["BUY", "SELL", "BOTH"];
   String? selectedTradeType;
 
@@ -29,8 +33,9 @@ class _StockDealMoreState extends State<StockDealMore> {
   bool isLoading = true;
   bool showFilter = false;
 
-  SymbolFilter? dealFilter;
+  Filters? dealFilter;
   String? selectedSymbol;
+  String? selectedClientName;
 
   Map<String, List<Deal>> dealByDate = {};
 
@@ -47,7 +52,7 @@ class _StockDealMoreState extends State<StockDealMore> {
       _scrollController.addListener(() {
         if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent) {
-          skip++;
+          skip = stockDeals.result?.length ?? 0;
           _loadFilteredDeal();
         }
       });
@@ -59,6 +64,7 @@ class _StockDealMoreState extends State<StockDealMore> {
           skip: skip,
           isEndOfList: stockDeals.isEndOfList!,
           symbolName: selectedSymbol,
+          clientName: selectedClientName,
           tradeTypes: selectedTradeType,
         ));
   }
@@ -73,10 +79,43 @@ class _StockDealMoreState extends State<StockDealMore> {
             skip: skip,
             isEndOfList: isEndOfList ?? stockDeals.isEndOfList!,
             symbolName: selectedSymbol,
+            clientName: selectedClientName,
             tradeTypes: selectedTradeType,
             executedAt: _startDate,
+            endDate: _endDate,
           ),
         );
+  }
+
+  void updateFilter({
+    required String? selectedValue,
+    required List<String> listToFilter,
+    required Function(String val) onSelect,
+  }) {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => FilterNameSelector(clientsList: listToFilter),
+      ),
+    )
+        .then((newValue) {
+      if (selectedValue != newValue) {
+        setState(() {
+          onSelect(newValue);
+        });
+        resetFilter();
+        _loadFilteredDeal(isEndOfList: false);
+      }
+    });
+  }
+
+  void resetFilter() {
+    setState(() {
+      skip = 0;
+      stockDeals.isEndOfList = false;
+      stockDeals.result = [];
+      dealByDate = {};
+    });
   }
 
   @override
@@ -129,6 +168,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                         }
                         isLoading = false;
                       });
+                      print(dealByDate);
                     }
                     if (state is StockDealFilterLoaded) {
                       setState(() {
@@ -164,68 +204,147 @@ class _StockDealMoreState extends State<StockDealMore> {
                               style: TextUtil.text14Bold,
                             ),
                             SizedBox(height: 20.h),
+                            Text("Investor Name :", style: TextUtil.text14Bold),
                             Row(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Symbols:",
-                                        style: TextUtil.text14Bold),
-                                    DropdownButton<String>(
-                                      value: selectedSymbol,
-                                      items: dealFilter!.values
-                                          .map(
-                                            (e) => DropdownMenuItem<String>(
-                                              value: e.value,
-                                              child: Text(
-                                                e.value,
-                                                style: TextUtil.subTitleText,
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                      onChanged: (val) {
-                                        if (val != selectedSymbol) {
-                                          setState(() {
-                                            selectedSymbol = val;
-                                          });
-                                          _loadFilteredDeal(isEndOfList: false);
-                                        }
-                                      },
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      updateFilter(
+                                        selectedValue: selectedClientName,
+                                        onSelect: (val) {
+                                          selectedClientName = val;
+                                        },
+                                        listToFilter:
+                                            dealFilter!.clientNames.values,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10.h, horizontal: 10.h),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Colors.blueAccent.withOpacity(0.2),
+                                        borderRadius:
+                                            BorderRadius.circular(20.h),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            selectedClientName ??
+                                                "Filter by Investor",
+                                            style: TextUtil.text14,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Text("Deal Type:",
-                                        style: TextUtil.text14Bold),
-                                    DropdownButton<String>(
-                                      value: selectedTradeType,
-                                      items: buyType
-                                          .map(
-                                            (e) => DropdownMenuItem<String>(
-                                              value: e,
-                                              child: Text(
-                                                e,
-                                                style: TextUtil.subTitleText,
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                      onChanged: (val) {
-                                        if (val != selectedTradeType) {
-                                          setState(() {
-                                            if (selectedTradeType == "BOTH") {
-                                              selectedTradeType = null;
-                                            } else {
-                                              selectedTradeType = val;
-                                            }
-                                          });
-                                          _loadFilteredDeal(isEndOfList: false);
-                                        }
-                                      },
+                                if (selectedClientName != null)
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedClientName = null;
+                                      });
+                                      resetFilter();
+                                      _loadFilteredDeal();
+                                    },
+                                    icon: const Icon(
+                                      Icons.cancel,
                                     ),
-                                  ],
+                                  )
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+                            Text("Stock :", style: TextUtil.text14Bold),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      updateFilter(
+                                        selectedValue: selectedSymbol,
+                                        onSelect: (val) {
+                                          selectedSymbol = val;
+                                        },
+                                        listToFilter: dealFilter!
+                                            .symbolFilter.values
+                                            .map((e) => e.name.toString())
+                                            .toList(),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10.h, horizontal: 10.h),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Colors.blueAccent.withOpacity(0.2),
+                                        borderRadius:
+                                            BorderRadius.circular(20.h),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            selectedSymbol ??
+                                                "Filter by Stocks",
+                                            style: TextUtil.text14,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                if (selectedSymbol != null)
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedSymbol = null;
+                                        });
+                                        resetFilter();
+                                        _loadFilteredDeal();
+                                      },
+                                      icon: const Icon(Icons.cancel))
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+                            Column(
+                              children: [
+                                Text("Deal Type:", style: TextUtil.text14Bold),
+                                DropdownButton<String>(
+                                  value: selectedTradeType,
+                                  items: buyType
+                                      .map(
+                                        (e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Text(
+                                            e,
+                                            style: TextUtil.subTitleText,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (val) {
+                                    if (val != selectedTradeType) {
+                                      setState(() {
+                                        if (val == "BOTH") {
+                                          selectedTradeType = null;
+                                        } else {
+                                          selectedTradeType = val;
+                                        }
+                                      });
+                                      resetFilter();
+                                      _loadFilteredDeal(isEndOfList: false);
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -243,6 +362,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                                           _startDate = start;
                                           _endDate = end;
                                         });
+                                        resetFilter();
                                         _loadFilteredDeal(isEndOfList: false);
                                       }
                                     },
@@ -259,7 +379,10 @@ class _StockDealMoreState extends State<StockDealMore> {
           ],
           if (stockDeals.result!.isEmpty) ...[
             const SliverToBoxAdapter(
-              child: Text("Empty"),
+              child: Text(
+                "No Deals Found",
+                textAlign: TextAlign.center,
+              ),
             ),
           ] else ...[
             SliverList.builder(
@@ -342,9 +465,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
             onPressed: () => _selectDate(context),
             child: Text(
               _startDate != null && _endDate != null
-                  ? '${_startDate!.toLocal()}'.split(' ')[0] +
-                      ' - ' +
-                      '${_endDate!.toLocal()}'.split(' ')[0]
+                  ? '${'${_startDate!.toLocal()}'.split(' ')[0]} - ${'${_endDate!.toLocal()}'.split(' ')[0]}'
                   : 'Select Date Range',
             ),
           ),

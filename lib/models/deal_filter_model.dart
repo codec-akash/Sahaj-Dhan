@@ -49,3 +49,39 @@ class ValueItem {
     };
   }
 }
+
+class ClientNames {
+  late final String key;
+  late final List<String> values;
+
+  ClientNames({required this.key, required this.values});
+
+  ClientNames.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    values = json['values'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['values'] = values;
+    return data;
+  }
+}
+
+class Filters {
+  SymbolFilter symbolFilter;
+  ClientNames clientNames;
+
+  Filters({
+    required this.symbolFilter,
+    required this.clientNames,
+  });
+
+  factory Filters.fromJson(Map<String, dynamic> json) {
+    return Filters(
+      symbolFilter: SymbolFilter.fromJson(json['result'][0]),
+      clientNames: ClientNames.fromJson(json['result'][2]),
+    );
+  }
+}
