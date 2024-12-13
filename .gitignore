@@ -48,9 +48,10 @@ app.*.map.json
 /android/key.properties
 
 # ios
-/ios/Runner.xcodeproj/
+/ios/Runner.xcodeproj
 /ios/Runner/GoogleService-info.plist
 
 firebase.json
 google-services.json
 firebase_options.dart
+pubspec.lock

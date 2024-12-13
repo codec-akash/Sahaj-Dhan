@@ -90,9 +90,5 @@ class TokenRetryPolicy extends RetryPolicy {
   }
 }
 
-final authedClient = InterceptedClient.build(
-  interceptors: [AuthInterceptor(), LoggingInterceptor()],
-  retryPolicy: TokenRetryPolicy(),
-);
 final nonAuthedClient =
     InterceptedClient.build(interceptors: [LoggingInterceptor()]);

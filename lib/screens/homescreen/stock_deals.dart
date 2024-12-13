@@ -42,7 +42,7 @@ class _StockDealMainState extends State<StockDealMain> {
             children: [
               SizedBox(height: 20.h),
               Text(
-                "Sahaj Dhan",
+                "Stock Overflow",
                 style: TextUtil.headingText,
               ),
               SizedBox(height: 20.h),

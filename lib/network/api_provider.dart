@@ -19,6 +19,21 @@ class ApiProvider {
     }
   }
 
+  Future<Map<String, dynamic>> post(String endPoint,
+      {Map<String, dynamic>? payload}) async {
+    String urlString = ApiUrls.baseURL + endPoint;
+    Uri url = Uri.parse(urlString);
+
+    Map<String, String> header = await _getHeaders();
+    try {
+      var response = await nonAuthedClient.post(url, body: payload);
+      Map<String, dynamic> res = ApiResponseHandler.output(response);
+      return res;
+    } catch (e) {
+      return ApiResponseHandler.outputError(urlString);
+    }
+  }
+
   Future<Map<String, String>> _getHeaders() async {
     Map<String, String> headers = {
       'Accept': 'application/json',
