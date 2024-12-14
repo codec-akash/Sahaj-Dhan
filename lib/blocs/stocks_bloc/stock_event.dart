@@ -23,8 +23,8 @@ class LoadStockDeals extends StockEvent {
 }
 
 class LoadPaginationStockDeal extends StockEvent {
-  final int skip;
-  final bool isEndOfList;
+  final int page;
+  final bool hasNextPage;
   final String? symbolName;
   final String? clientName;
   final String? tradeTypes;
@@ -32,8 +32,8 @@ class LoadPaginationStockDeal extends StockEvent {
   final DateTime? endDate;
 
   const LoadPaginationStockDeal({
-    required this.skip,
-    required this.isEndOfList,
+    required this.page,
+    required this.hasNextPage,
     this.symbolName,
     this.clientName,
     this.tradeTypes,
@@ -42,7 +42,7 @@ class LoadPaginationStockDeal extends StockEvent {
   });
 
   @override
-  List<Object> get props => [skip, isEndOfList];
+  List<Object> get props => [page, hasNextPage];
 }
 
 class LoadStockDealFilters extends StockEvent {}

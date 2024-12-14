@@ -33,10 +33,10 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       LoadPaginationStockDeal event, Emitter<StockState> emit) async {
     try {
       StockDeals stockDeals = StockDeals(result: []);
-      if (!event.isEndOfList) {
+      if (event.hasNextPage) {
         emit(StockStateLoading(currentEvent: event));
         stockDeals = await stockRepository.getStockDealListPaginated(
-          event.skip,
+          event.page,
           tradeType: event.tradeTypes,
           symbolName: event.symbolName,
           clientName: event.clientName,
@@ -52,7 +52,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
           loadedStockDeals = stockDeals;
         } else {
           loadedStockDeals!.result!.addAll(stockDeals.result!);
-          loadedStockDeals!.isEndOfList = stockDeals.isEndOfList;
+          loadedStockDeals!.hasNextPage = stockDeals.hasNextPage;
         }
       }
 

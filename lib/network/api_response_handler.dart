@@ -9,7 +9,7 @@ class ApiResponseHandler {
 
     if (uriResponse.statusCode == 200 || uriResponse.statusCode ~/ 100 == 2) {
       res['statusCode'] = uriResponse.statusCode;
-      res['result'] = json.decode(uriResponse.body)['result'];
+      res['result'] = json.decode(uriResponse.body);
       res['error'] = null;
     } else if (uriResponse.statusCode ~/ 100 == 4) {
       res['statusCode'] = uriResponse.statusCode;

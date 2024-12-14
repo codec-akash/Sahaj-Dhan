@@ -12,4 +12,9 @@ class DateTimeUtils {
   static String dateFormat(DateTime val) {
     return DateFormat('MMM dd, yyyy').format(val);
   }
+
+  static String dateFormatddMMYYYY(String val) {
+    DateTime formattedDate = DateFormat('dd-MMM-yyyy').parse(val);
+    return dateFormat(formattedDate);
+  }
 }
