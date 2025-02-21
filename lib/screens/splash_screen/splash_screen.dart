@@ -24,11 +24,19 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FirebaseApi().initNotifications().then((value) {
-        context.read<UserBloc>().add(CheckCanSendToken());
+        // context.read<UserBloc>().add(CheckCanSendToken());
       });
       FirebaseApi().listenFcmToken();
       FirebaseApi().listenFcmMessage();
-      context.read<StockBloc>().add(LoadStockDealFilters());
+      // context.read<StockBloc>().add(LoadStockDealFilters());
+
+      // TODO: uncomment after adding filter api from backend --
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const StockDealMain()));
+        }
+      });
     });
   }
 

@@ -6,8 +6,8 @@ class Strings {
 
 class ApiUrls {
   // base url --
-  // static const String baseURL = "https://api.stockoverflow.co.in";
-  static const String baseURL = "http://192.168.1.4:3000/api";
+  static const String baseURL = "https://stocksapi.mahakhumb.in/api";
+  // static const String baseURL = "http://192.168.1.4:3000/api";
 
   // end- points --
   static const String getBulkDeals = "/stocks/deals";

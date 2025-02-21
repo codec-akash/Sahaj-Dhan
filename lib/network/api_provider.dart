@@ -11,7 +11,8 @@ class ApiProvider {
     Map<String, String> header = await _getHeaders();
 
     try {
-      var response = await nonAuthedClient.get(url, params: queryParam);
+      var response =
+          await nonAuthedClient.get(url, params: queryParam, headers: header);
       Map<String, dynamic> res = ApiResponseHandler.output(response);
       return res;
     } catch (e) {
