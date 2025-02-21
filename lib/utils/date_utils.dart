@@ -12,4 +12,15 @@ class DateTimeUtils {
   static String dateFormat(DateTime val) {
     return DateFormat('MMM dd, yyyy').format(val);
   }
+
+  static String dateFormatddMMYYYY(String val) {
+    final parts = val.split('-');
+    final day = parts[0];
+    final month = parts[1].substring(0, 1).toUpperCase() +
+        parts[1].substring(1).toLowerCase();
+    final year = parts[2];
+    DateTime formattedDate =
+        DateFormat('dd-MMM-yyyy').parse('$day-$month-$year');
+    return dateFormat(formattedDate);
+  }
 }

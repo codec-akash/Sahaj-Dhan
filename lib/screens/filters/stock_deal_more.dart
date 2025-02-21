@@ -27,8 +27,8 @@ class _StockDealMoreState extends State<StockDealMore> {
   List<String> buyType = ["BUY", "SELL", "BOTH"];
   String? selectedTradeType;
 
-  StockDeals stockDeals = StockDeals(result: [], isEndOfList: false);
-  int skip = 0;
+  StockDeals stockDeals = StockDeals(result: [], hasNextPage: true);
+  int page = 0;
 
   bool isLoading = true;
   bool showFilter = false;
@@ -52,7 +52,7 @@ class _StockDealMoreState extends State<StockDealMore> {
       _scrollController.addListener(() {
         if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent) {
-          skip = stockDeals.result?.length ?? 0;
+          page++;
           _loadFilteredDeal();
         }
       });
@@ -61,23 +61,23 @@ class _StockDealMoreState extends State<StockDealMore> {
 
   void _loadStockDeals() {
     context.read<StockBloc>().add(LoadPaginationStockDeal(
-          skip: skip,
-          isEndOfList: stockDeals.isEndOfList!,
+          page: page,
+          hasNextPage: stockDeals.hasNextPage!,
           symbolName: selectedSymbol,
           clientName: selectedClientName,
           tradeTypes: selectedTradeType,
         ));
   }
 
-  void _loadFilteredDeal({bool? isEndOfList}) {
+  void _loadFilteredDeal({bool? hasNextPage}) {
     // setState(() {
     //   dealByDate = {};
     // });
     // context.read<StockBloc>().loadedStockDeals = null;
     context.read<StockBloc>().add(
           LoadPaginationStockDeal(
-            skip: skip,
-            isEndOfList: isEndOfList ?? stockDeals.isEndOfList!,
+            page: page,
+            hasNextPage: hasNextPage ?? stockDeals.hasNextPage!,
             symbolName: selectedSymbol,
             clientName: selectedClientName,
             tradeTypes: selectedTradeType,
@@ -104,15 +104,15 @@ class _StockDealMoreState extends State<StockDealMore> {
           onSelect(newValue);
         });
         resetFilter();
-        _loadFilteredDeal(isEndOfList: false);
+        _loadFilteredDeal(hasNextPage: true);
       }
     });
   }
 
   void resetFilter() {
     setState(() {
-      skip = 0;
-      stockDeals.isEndOfList = false;
+      page = 0;
+      stockDeals.hasNextPage = true;
       stockDeals.result = [];
       dealByDate = {};
     });
@@ -156,7 +156,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                       setState(() {
                         stockDeals.result!
                             .addAll(state.stockDeals.result ?? []);
-                        stockDeals.isEndOfList = state.stockDeals.isEndOfList;
+                        stockDeals.hasNextPage = state.stockDeals.hasNextPage;
                         if (state.stockDeals.result != null) {
                           for (var element in state.stockDeals.result!) {
                             String dealDate = element.executedAt!;
@@ -168,7 +168,6 @@ class _StockDealMoreState extends State<StockDealMore> {
                         }
                         isLoading = false;
                       });
-                      print(dealByDate);
                     }
                     if (state is StockDealFilterLoaded) {
                       setState(() {
@@ -216,7 +215,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                                           selectedClientName = val;
                                         },
                                         listToFilter:
-                                            dealFilter!.clientNames.values,
+                                            dealFilter!.uniqueClientNames ?? [],
                                       );
                                     },
                                     child: Container(
@@ -272,9 +271,9 @@ class _StockDealMoreState extends State<StockDealMore> {
                                         onSelect: (val) {
                                           selectedSymbol = val;
                                         },
-                                        listToFilter: dealFilter!
-                                            .symbolFilter.values
-                                            .map((e) => e.name.toString())
+                                        listToFilter: (dealFilter!.stockName ??
+                                                [])
+                                            .map((e) => e.security.toString())
                                             .toList(),
                                       );
                                     },
@@ -342,7 +341,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                                         }
                                       });
                                       resetFilter();
-                                      _loadFilteredDeal(isEndOfList: false);
+                                      _loadFilteredDeal(hasNextPage: true);
                                     }
                                   },
                                 ),
@@ -363,7 +362,7 @@ class _StockDealMoreState extends State<StockDealMore> {
                                           _endDate = end;
                                         });
                                         resetFilter();
-                                        _loadFilteredDeal(isEndOfList: false);
+                                        _loadFilteredDeal(hasNextPage: true);
                                       }
                                     },
                                   ),
@@ -394,8 +393,8 @@ class _StockDealMoreState extends State<StockDealMore> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
                     child: Text(
-                      DateTimeUtils.dateFormat(
-                              DateTime.parse(dealByDate.keys.elementAt(index)))
+                      DateTimeUtils.dateFormatddMMYYYY(
+                              dealByDate.keys.elementAt(index))
                           .toString(),
                       style: TextUtil.subTitleTextBold,
                     ),

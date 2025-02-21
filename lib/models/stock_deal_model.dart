@@ -2,20 +2,20 @@ import 'package:sahaj_dhan/utils/types.dart';
 
 class StockDeals {
   List<Deal>? result;
-  num? totalCount;
-  bool? isEndOfList;
+  num? totalItems;
+  bool? hasNextPage;
 
-  StockDeals({this.result, this.totalCount, this.isEndOfList});
+  StockDeals({this.result, this.totalItems, this.hasNextPage});
 
   StockDeals.fromJson(Map<String, dynamic> json) {
-    if (json['result'] != null) {
+    if (json['data'] != null) {
       result = <Deal>[];
-      json['result'].forEach((v) {
+      json['data'].forEach((v) {
         result!.add(Deal.fromJson(v));
       });
     }
-    totalCount = json['totalCount'];
-    isEndOfList = json['isEndOfList'];
+    totalItems = json['totalItems'];
+    hasNextPage = json['hasNextPage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,8 +23,8 @@ class StockDeals {
     if (result != null) {
       data['result'] = result!.map((v) => v.toJson()).toList();
     }
-    data['totalCount'] = totalCount;
-    data['isEndOfList'] = isEndOfList;
+    data['totalItems'] = totalItems;
+    data['hasNextPage'] = hasNextPage;
     return data;
   }
 }
@@ -53,26 +53,26 @@ class Deal {
   DealTradeType get dealTradeType => DealTradeType.fromText(tradeType);
 
   Deal.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     clientName = json['clientName'];
-    quantity = json['quantity'];
+    quantity = json['quantityTraded'];
     securityName = json['securityName'];
     symbol = json['symbol'];
-    tradePrice = json['tradePrice'];
+    tradePrice = num.parse(json['tradePrice']);
     tradeType = json['tradeType'];
-    executedAt = json['executedAt'];
+    executedAt = json['date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['clientName'] = clientName;
-    data['quantity'] = quantity;
+    data['quantityTraded'] = quantity;
     data['securityName'] = securityName;
     data['symbol'] = symbol;
     data['tradePrice'] = tradePrice;
     data['tradeType'] = tradeType;
-    data['executedAt'] = executedAt;
+    data['date'] = executedAt;
     return data;
   }
 }
