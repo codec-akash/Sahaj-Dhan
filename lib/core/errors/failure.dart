@@ -7,6 +7,8 @@ abstract class Failure extends Equatable {
     required this.errorCode,
   });
 
+  String get errorMessgae => "$errorCode : $message";
+
   final String message;
   final int errorCode;
 
