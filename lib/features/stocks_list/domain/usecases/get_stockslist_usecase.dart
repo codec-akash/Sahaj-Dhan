@@ -13,6 +13,6 @@ class GetStocksList extends BaseUsecaseWithoutParams<List<Stock>> {
 
   @override
   FutureResult<List<Stock>> call() async {
-    return await _stockRepo.getStockList();
+    return await _stockRepo.getStocksList();
   }
 }

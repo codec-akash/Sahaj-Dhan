@@ -20,14 +20,14 @@ void main() {
 
   test("should call the [Repo.getStocksList] and return [List<Stock>]",
       () async {
-    when(() => stockRepository.getStockList())
+    when(() => stockRepository.getStocksList())
         .thenAnswer((_) async => const Right(tResponse));
 
     final result = await getStocksList();
 
     expect(result, equals(const Right<dynamic, List<Stock>>(tResponse)));
 
-    verify(() => stockRepository.getStockList()).called(1);
+    verify(() => stockRepository.getStocksList()).called(1);
     verifyNoMoreInteractions(stockRepository);
   });
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:sahaj_dhan/core/errors/exceptions.dart';
 
 abstract class Failure extends Equatable {
   const Failure({
@@ -18,4 +19,7 @@ class ApiFailure extends Failure {
     required super.message,
     required super.errorCode,
   });
+
+  factory ApiFailure.fromExpection(ApiException exception) =>
+      ApiFailure(message: exception.message, errorCode: exception.errorCode);
 }
