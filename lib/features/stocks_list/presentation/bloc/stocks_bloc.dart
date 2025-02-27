@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/usecases/get_stockslist_usecase.dart';
 
-part './stocks_event.dart';
-part './stocks_state.dart';
+part 'stocks_event.dart';
+part 'stocks_state.dart';
 
 class StocksBloc extends Bloc<StocksEvent, StocksState> {
   final GetStocksList _getStocksList;

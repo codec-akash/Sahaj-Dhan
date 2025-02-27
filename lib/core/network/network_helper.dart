@@ -2,13 +2,16 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:sahaj_dhan/core/errors/exceptions.dart';
+import 'package:sahaj_dhan/core/network/api_client.dart';
 
 enum Method { get, post, put, patch, delete }
 
 class ApiHelper {
-  final Dio _dio;
+  final ApiClient apiClient;
 
-  ApiHelper(this._dio);
+  ApiHelper(this.apiClient);
+
+  Dio get _dio => apiClient.dio;
 
   Future<Response> execute({
     required Method method,
@@ -17,59 +20,78 @@ class ApiHelper {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      Response? response;
+      Response response;
       switch (method) {
         case Method.get:
           response = await _dio.get(url, queryParameters: queryParameters);
           break;
         case Method.post:
-          response = await _dio.post(url, data: data);
+          response = await _dio.post(url,
+              data: data, queryParameters: queryParameters);
           break;
         case Method.put:
-          response = await _dio.put(url, data: data);
+          response =
+              await _dio.put(url, data: data, queryParameters: queryParameters);
           break;
         case Method.patch:
-          response = await _dio.patch(url);
+          response = await _dio.patch(url,
+              data: data, queryParameters: queryParameters);
           break;
         case Method.delete:
-          response = await _dio.delete(url);
+          response = await _dio.delete(url,
+              data: data, queryParameters: queryParameters);
           break;
       }
 
       return _returnResponse(response);
     } on DioException catch (e) {
-      return _returnResponse(e.response!);
+      if (e.response != null) {
+        return _returnResponse(e.response!);
+      } else {
+        throw ApiException(
+          message: 'Network error: ${e.message}',
+          errorCode: 0,
+        );
+      }
+    } catch (e) {
+      throw ApiException(
+        message: 'Unexpected error: $e',
+        errorCode: -1,
+      );
     }
   }
 
   Response _returnResponse(Response response) {
-    switch (response.statusCode) {
+    final statusCode = response.statusCode ?? 500;
+    final responseData =
+        response.data is String ? jsonDecode(response.data) : response.data;
+    final errorMessage = responseData is Map
+        ? responseData["message"]?.toString()
+        : 'Unknown error';
+
+    switch (statusCode) {
       case 200:
       case 201:
         return response;
       case 400:
-        throw BadRequestException(
-            response.data["message"].toString(), response.statusCode!);
+        throw BadRequestException(errorMessage ?? 'Bad Request', statusCode);
       case 401:
-        throw UnauthorizedException(
-            response.data["message"].toString(), response.statusCode!);
+        throw UnauthorizedException(errorMessage ?? 'Unauthorized', statusCode);
       case 403:
-        throw ForbiddenException(
-            response.data["message"].toString(), response.statusCode!);
+        throw ForbiddenException(errorMessage ?? 'Forbidden', statusCode);
       case 404:
-        var res = jsonDecode(response.data);
-        throw NotFoundException(
-            res["message"].toString(), response.statusCode!);
+        throw NotFoundException(errorMessage ?? 'Not Found', statusCode);
       case 422:
         throw UnprocessableContentException(
-            response.data["message"].toString(), response.statusCode!);
+            errorMessage ?? 'Unprocessable Content', statusCode);
       case 500:
         throw InternalServerException(
-            response.data["message"].toString(), response.statusCode!);
+            errorMessage ?? 'Internal Server Error', statusCode);
       default:
         throw ApiException(
-          message: 'Error occured while Communication with Server',
-          errorCode: response.statusCode ?? 505,
+          message:
+              errorMessage ?? 'Error occurred while communicating with server',
+          errorCode: statusCode,
         );
     }
   }

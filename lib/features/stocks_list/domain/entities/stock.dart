@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:sahaj_dhan/core/types/stock_deal_type.dart';
 
 class Stock extends Equatable {
   final int id;
@@ -22,6 +23,9 @@ class Stock extends Equatable {
     required this.tradePrice,
     required this.remark,
   });
+
+  StockDealType get stockDealType =>
+      StockDealType.fromText(tradeType.toUpperCase());
 
   @override
   List<Object?> get props => [

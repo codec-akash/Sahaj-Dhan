@@ -6,7 +6,7 @@ import 'package:sahaj_dhan/features/stocks_list/data/datasource/stocks_remote_da
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/repositories/stock_repository.dart';
 
-class StockRepoImpl implements StockRepository {
+class StockRepoImpl implements StocksRepository {
   final StocksRemoteDataSource _stocksRemoteDataSource;
 
   const StockRepoImpl({required StocksRemoteDataSource stocksRemoteDataSource})

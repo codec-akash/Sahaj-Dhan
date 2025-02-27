@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sahaj_dhan/core/errors/failure.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/usecases/get_stockslist_usecase.dart';
-import 'package:sahaj_dhan/presentation/bloc/stocks_bloc.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 
 class MockGetStocks extends Mock implements GetStocksList {}
 

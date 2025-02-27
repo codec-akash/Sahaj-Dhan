@@ -1,4 +1,5 @@
 class ApiUrl {
-  static const String baseUrl = "stocksapi.mahakhumb.in";
-  static const String stockList = "api/stocks/deals";
+  static const String baseUrl = "https://stocksapi.mahakhumb.in/api/";
+  static const String stockList = "stocks/deals";
+  static const String filters = "stocks/filters";
 }

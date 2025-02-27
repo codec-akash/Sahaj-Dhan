@@ -5,11 +5,11 @@ import 'package:sahaj_dhan/features/stocks_list/domain/repositories/stock_reposi
 
 class GetStocksList extends BaseUsecaseWithoutParams<List<Stock>> {
   const GetStocksList({
-    required StockRepository stockRepo,
+    required StocksRepository stockRepo,
   })  : _stockRepo = stockRepo,
         super();
 
-  final StockRepository _stockRepo;
+  final StocksRepository _stockRepo;
 
   @override
   FutureResult<List<Stock>> call() async {

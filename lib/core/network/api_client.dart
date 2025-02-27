@@ -28,9 +28,6 @@ class ApiClient {
         responseBody: true,
         error: true,
       ),
-      InterceptorsWrapper(
-        onRequest: (options, handler) {},
-      )
     ]);
   }
 }

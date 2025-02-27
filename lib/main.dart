@@ -1,14 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
+import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/firebase_options.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/ui/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final directory = await getApplicationDocumentsDirectory();
@@ -23,24 +29,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ScreenUtilInit(
-      designSize: Size(428, 926),
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
-        title: "Strings.appName",
-        debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+      child: BlocProvider(
+        create: (context) => StocksBloc(getStockList: di()),
+        child: MaterialApp(
+          title: "Sahaj Dhan",
+          debugShowCheckedModeBanner: false,
+          theme: ThemeConfig.lightTheme(),
+          home: HomeScreen(),
+        ),
       ),
     );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
