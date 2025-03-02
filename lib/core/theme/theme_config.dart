@@ -9,6 +9,12 @@ class ThemeConfig {
 }
 
 class CustomTextTheme extends TextStyle {
+  static TextStyle text24 = TextStyle(
+    fontSize: 24.h,
+    height: 32.h / 24.h,
+    fontWeight: FontWeight.w400,
+  );
+
   static TextStyle text16 = TextStyle(
     fontSize: 16.h,
     height: 20.h / 16.h,

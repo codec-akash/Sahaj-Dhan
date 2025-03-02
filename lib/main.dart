@@ -34,7 +34,11 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: BlocProvider(
-        create: (context) => StocksBloc(getStockList: di()),
+        create: (context) => StocksBloc(
+          getStockList: di(),
+          getStockFilter: di(),
+          stocksService: di(),
+        ),
         child: MaterialApp(
           title: "Sahaj Dhan",
           debugShowCheckedModeBanner: false,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stocks_filter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,13 +25,23 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void loadInit() {
-    context.read<StocksBloc>().add(GetStockListEvent());
+    context.read<StocksBloc>().add(GetStockListEvent(page: 0));
+    context.read<StocksBloc>().add(GetStockFilter());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Sahaj Dhan"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => StocksFilterMain()));
+        },
+        child: Icon(Icons.filter_list_sharp),
+      ),
       body: RefreshIndicator.adaptive(
         onRefresh: () async {
           Completer loadInitFuture = Completer<void>();
@@ -45,39 +56,58 @@ class _HomeScreenState extends State<HomeScreen> {
           });
           return loadInitFuture.future;
         },
-        child: BlocConsumer<StocksBloc, StocksState>(
-          listener: (context, state) {
-            if (state is StocksFailure) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
-            }
-          },
-          builder: (context, state) {
-            if (state is StocksLoadingState) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (state is StocksListLoaded) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Stocks Traded Today -", style: CustomTextTheme.text16),
-                  SizedBox(height: 10.h),
-                  Expanded(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Stocks Traded Today -",
+                  style: CustomTextTheme.text16,
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            BlocListener<StocksBloc, StocksState>(
+              bloc: context.read<StocksBloc>(),
+              listener: (context, state) {
+                if (state is StocksFailure) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(state.message)));
+                }
+              },
+              child: Container(),
+            ),
+            BlocBuilder<StocksBloc, StocksState>(
+              buildWhen: (previous, current) {
+                return current is StocksLoadingState ||
+                    current is StocksListLoaded ||
+                    current is StocksFailure;
+              },
+              builder: (context, state) {
+                if (state is StocksLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is StocksListLoaded) {
+                  if (state.stocks.values.isEmpty) {
+                    return Container();
+                  }
+                  return Expanded(
                     child: ListView.builder(
-                      itemCount: state.stocks.length,
+                      itemCount: state.stocks.values.elementAt(0).length,
                       itemBuilder: (context, idx) => StockCard(
-                        stock: state.stocks[idx],
+                        stock: state.stocks.values.elementAt(0)[idx],
                       ),
                     ),
-                  ),
-                ],
-              );
-            }
-            return Text(
-              "No State Found",
-              style: CustomTextTheme.text14.copyWith(color: Colors.amber),
-            );
-          },
+                  );
+                }
+                return Text(
+                  "No State Found",
+                  style: CustomTextTheme.text14.copyWith(color: Colors.amber),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

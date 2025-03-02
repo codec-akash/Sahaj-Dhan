@@ -20,12 +20,6 @@ class StockCard extends StatelessWidget {
       padding: EdgeInsets.all(10.h),
       decoration: BoxDecoration(
         color: stock.stockDealType.color.withOpacity(0.45),
-        // gradient: LinearGradient(
-        //   colors: [
-        //     stock.stockDealType.color.withOpacity(0.2),
-        //     stock.stockDealType.color,
-        //   ],
-        // ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

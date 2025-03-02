@@ -34,7 +34,7 @@ void main() {
       );
 
       // act
-      final result = await stocksRemoteDataSource.getStocksList();
+      final result = await stocksRemoteDataSource.getStocksList(page: 0);
 
       //assert --
       expect(result, equals(tStocks));
@@ -55,7 +55,7 @@ void main() {
       final call = stocksRemoteDataSource.getStocksList;
 
       // assert
-      expect(() => call(), throwsA(equals(apiException)));
+      expect(() => call(page: 0), throwsA(equals(apiException)));
       verify(() => apiHelper.execute(method: Method.get, url: ApiUrl.stockList))
           .called(1);
       verifyNoMoreInteractions(apiHelper);

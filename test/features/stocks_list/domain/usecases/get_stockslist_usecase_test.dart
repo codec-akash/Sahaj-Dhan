@@ -5,11 +5,11 @@ import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/repositories/stock_repository.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/usecases/get_stockslist_usecase.dart';
 
-class MockStocksRepo extends Mock implements StockRepository {}
+class MockStocksRepo extends Mock implements StocksRepository {}
 
 void main() {
   late GetStocksList getStocksList;
-  late StockRepository stockRepository;
+  late StocksRepository stockRepository;
 
   setUp(() {
     stockRepository = MockStocksRepo();
@@ -20,14 +20,14 @@ void main() {
 
   test("should call the [Repo.getStocksList] and return [List<Stock>]",
       () async {
-    when(() => stockRepository.getStocksList())
+    when(() => stockRepository.getStocksList(page: 0))
         .thenAnswer((_) async => const Right(tResponse));
 
-    final result = await getStocksList();
+    final result = await getStocksList(0);
 
     expect(result, equals(const Right<dynamic, List<Stock>>(tResponse)));
 
-    verify(() => stockRepository.getStocksList()).called(1);
+    verify(() => stockRepository.getStocksList(page: 0)).called(1);
     verifyNoMoreInteractions(stockRepository);
   });
 }

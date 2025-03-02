@@ -28,25 +28,26 @@ void main() {
     test(
         "should call [RemoteDataSource.getStockList] and return [List<Stocks>] when success",
         () async {
-      when(() => remoteDataSource.getStocksList()).thenAnswer((_) async => []);
+      when(() => remoteDataSource.getStocksList(page: 0))
+          .thenAnswer((_) async => []);
 
-      final result = await stockRepoImpl.getStocksList();
+      final result = await stockRepoImpl.getStocksList(page: 0);
 
       expect(result, isA<Right<dynamic, List<Stock>>>());
-      verify(() => remoteDataSource.getStocksList()).called(1);
+      verify(() => remoteDataSource.getStocksList(page: 0)).called(1);
       verifyNoMoreInteractions(remoteDataSource);
     });
 
     test("should return [APIFailure] when call to the remote fails", () async {
-      when(() => remoteDataSource.getStocksList()).thenThrow(tException);
+      when(() => remoteDataSource.getStocksList(page: 0)).thenThrow(tException);
 
-      final result = await stockRepoImpl.getStocksList();
+      final result = await stockRepoImpl.getStocksList(page: 0);
 
       expect(
           result,
           equals(Left(ApiFailure(
               message: tException.message, errorCode: tException.errorCode))));
-      verify(() => remoteDataSource.getStocksList()).called(1);
+      verify(() => remoteDataSource.getStocksList(page: 0)).called(1);
       verifyNoMoreInteractions(remoteDataSource);
     });
   });

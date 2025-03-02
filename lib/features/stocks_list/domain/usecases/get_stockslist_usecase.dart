@@ -3,7 +3,7 @@ import 'package:sahaj_dhan/core/utils/typedef.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/repositories/stock_repository.dart';
 
-class GetStocksList extends BaseUsecaseWithoutParams<List<Stock>> {
+class GetStocksList extends BaseUsecaseWithParams<List<Stock>, int> {
   const GetStocksList({
     required StocksRepository stockRepo,
   })  : _stockRepo = stockRepo,
@@ -12,7 +12,7 @@ class GetStocksList extends BaseUsecaseWithoutParams<List<Stock>> {
   final StocksRepository _stockRepo;
 
   @override
-  FutureResult<List<Stock>> call() async {
-    return await _stockRepo.getStocksList();
+  FutureResult<List<Stock>> call(params) async {
+    return await _stockRepo.getStocksList(page: params);
   }
 }
