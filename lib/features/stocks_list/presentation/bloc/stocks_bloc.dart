@@ -61,8 +61,7 @@ class StocksBloc extends Bloc<StocksEvent, StocksState> {
   }
 
   Future<void> _emitLoader(StocksEvent event, Emitter<StocksState> emit) async {
-    if (state is! StocksListLoaded) {
-      emit(StocksLoadingState());
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    emit(StocksLoadingState());
   }
 }

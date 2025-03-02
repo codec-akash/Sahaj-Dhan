@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/widget/stock_date_list.dart';
+import 'package:sahaj_dhan/main.dart';
 
 class StocksFilterMain extends StatefulWidget {
   const StocksFilterMain({super.key});
@@ -13,6 +16,7 @@ class StocksFilterMain extends StatefulWidget {
 class _StocksFilterMainState extends State<StocksFilterMain> {
   int page = 0;
   final ScrollController _scrollController = ScrollController();
+  Map<String, List<Stock>> stocks = {};
 
   @override
   void initState() {
@@ -49,14 +53,25 @@ class _StocksFilterMainState extends State<StocksFilterMain> {
         controller: _scrollController,
         slivers: [
           _buildBlocListener(),
+          SliverList.builder(
+            itemCount: stocks.entries.length,
+            itemBuilder: (context, index) => StockDateList(
+              date: stocks.entries.elementAt(index).key,
+              dateStocks: stocks.entries.elementAt(index).value,
+            ),
+          ),
           BlocBuilder<StocksBloc, StocksState>(
             builder: (context, state) {
-              if (state is StocksListLoaded) {
-                return SliverList.builder(
-                  itemCount: state.stocks.entries.length,
-                  itemBuilder: (context, index) => StockDateList(
-                    date: state.stocks.entries.elementAt(index).key,
-                    dateStocks: state.stocks.entries.elementAt(index).value,
+              if (state is StocksLoadingState) {
+                return SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 50.h),
+                      Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                      SizedBox(height: 50.h),
+                    ],
                   ),
                 );
               }
@@ -71,7 +86,11 @@ class _StocksFilterMainState extends State<StocksFilterMain> {
   Widget _buildBlocListener() {
     return BlocListener<StocksBloc, StocksState>(
       listener: (context, state) {
-        if (state is StocksListLoaded) {}
+        if (state is StocksListLoaded) {
+          setState(() {
+            stocks = state.stocks;
+          });
+        }
       },
       child: SliverToBoxAdapter(),
     );
