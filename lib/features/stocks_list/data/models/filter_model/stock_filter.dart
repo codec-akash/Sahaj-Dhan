@@ -1,17 +1,31 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:hive/hive.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/filter.dart';
 
 part 'stock_filter.g.dart';
 
-@JsonSerializable()
+@HiveType(typeId: 1)
 class StockFilterModel extends StocksFilter {
   const StockFilterModel({
-    required super.securityName,
-    required super.symbol,
-  });
+    required this.securityName,
+    required this.symbol,
+  }) : super(securityName: securityName, symbol: symbol);
 
-  factory StockFilterModel.fromJson(Map<String, dynamic> json) =>
-      _$StockFilterModelFromJson(json);
+  @HiveField(0)
+  final String securityName;
+  @HiveField(1)
+  final String symbol;
 
-  Map<String, dynamic> toJson() => _$StockFilterModelToJson(this);
+  factory StockFilterModel.fromJson(Map<String, dynamic> json) {
+    return StockFilterModel(
+      securityName: json['securityName'],
+      symbol: json['symbol'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'symbol': symbol,
+      'securityName': securityName,
+    };
+  }
 }

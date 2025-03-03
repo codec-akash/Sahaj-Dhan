@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/widget/stock_date_list.dart';
-import 'package:sahaj_dhan/main.dart';
 
 class StocksFilterMain extends StatefulWidget {
   const StocksFilterMain({super.key});

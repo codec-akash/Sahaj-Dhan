@@ -31,8 +31,12 @@ class StockFilterLoaded extends StocksState {
 
 class StocksFailure extends StocksState {
   final String message;
+  final StocksEvent event;
 
-  const StocksFailure({required this.message});
+  const StocksFailure({
+    required this.event,
+    required this.message,
+  });
 
   @override
   List<Object?> get props => [message];

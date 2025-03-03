@@ -66,7 +66,10 @@ void main() {
       act: (bloc) => bloc.add(GetStockListEvent(page: 0)),
       expect: () => [
         StocksLoadingState(),
-        StocksFailure(message: apiFailure.errorMessgae)
+        StocksFailure(
+          event: GetStockListEvent(page: 0),
+          message: apiFailure.errorMessgae,
+        )
       ],
       verify: (bloc) {
         verify(() => getStocksList(0)).called(1);

@@ -80,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             BlocBuilder<StocksBloc, StocksState>(
               buildWhen: (previous, current) {
-                return current is StocksListLoaded || current is StocksFailure;
+                return current is StocksListLoaded ||
+                    (current is StocksFailure &&
+                        current.event is GetStockListEvent);
               },
               builder: (context, state) {
                 if (state is StocksLoadingState) {

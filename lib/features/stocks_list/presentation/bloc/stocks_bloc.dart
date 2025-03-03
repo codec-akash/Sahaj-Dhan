@@ -35,7 +35,10 @@ class StocksBloc extends Bloc<StocksEvent, StocksState> {
     final result = await _getStocksList.call(event.page);
     try {
       result.fold(
-        (left) => emit(StocksFailure(message: left.errorMessgae)),
+        (left) => emit(StocksFailure(
+          message: left.errorMessgae,
+          event: event,
+        )),
         (stocks) {
           if (event.page == 0) {
             _stocks.clear();
@@ -47,6 +50,7 @@ class StocksBloc extends Bloc<StocksEvent, StocksState> {
         },
       );
     } catch (e) {
+      print(e.toString());
       throw ApiFailure(message: "$e", errorCode: -1);
     }
   }
@@ -55,7 +59,10 @@ class StocksBloc extends Bloc<StocksEvent, StocksState> {
       GetStockFilter event, Emitter<StocksState> emit) async {
     final result = await _getStockFilter();
     result.fold(
-      (left) => emit(StocksFailure(message: left.errorMessgae)),
+      (left) => emit(StocksFailure(
+        message: left.errorMessgae,
+        event: event,
+      )),
       (filter) => emit(StockFilterLoaded(filter)),
     );
   }

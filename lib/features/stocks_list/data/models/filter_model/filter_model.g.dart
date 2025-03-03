@@ -3,29 +3,45 @@
 part of 'filter_model.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
+// TypeAdapterGenerator
 // **************************************************************************
 
-FilterModel _$FilterModelFromJson(Map<String, dynamic> json) => FilterModel(
-      clientName: json['clientName'] == null
-          ? []
-          : (json['clientName'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      tradeType: json['tradeType'] == null
-          ? []
-          : (json['tradeType'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      stocksFilter: json['stocks'] == null
-          ? []
-          : (json['stocks'] as List)
-              .map((element) => StockFilterModel.fromJson(element))
-              .toList(),
-    );
+class FilterModelAdapter extends TypeAdapter<FilterModel> {
+  @override
+  final int typeId = 0;
 
-Map<String, dynamic> _$FilterModelToJson(FilterModel instance) =>
-    <String, dynamic>{
-      'clientName': instance.clientName,
-      'tradeType': instance.tradeType,
+  @override
+  FilterModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+    return FilterModel(
+      clientName: (fields[0] as List).cast<String>(),
+      stocksFilter: (fields[1] as List).cast<StocksFilter>(),
+      tradeType: (fields[2] as List).cast<String>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FilterModel obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.clientName)
+      ..writeByte(1)
+      ..write(obj.stocksFilter)
+      ..writeByte(2)
+      ..write(obj.tradeType);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FilterModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

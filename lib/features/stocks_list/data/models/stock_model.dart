@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
+
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
 
-part 'stock_model.g.dart';
-
-@JsonSerializable()
 class StockModel extends Stock {
   const StockModel({
     required super.id,
@@ -18,10 +15,31 @@ class StockModel extends Stock {
     required super.remark,
   });
 
-  factory StockModel.fromJson(Map<String, dynamic> json) =>
-      _$StockModelFromJson(json);
+  factory StockModel.fromJson(Map<String, dynamic> json) => StockModel(
+        id: (json['id'] as num).toInt(),
+        date: json['date'] as String,
+        symbol: json['symbol'] as String,
+        securityName: json['securityName'] as String,
+        clientName: json['clientName'] as String,
+        tradeType: json['tradeType'] as String,
+        quantityTraded: (json['quantityTraded'] as num).toInt(),
+        tradePrice: json['tradePrice'] as String,
+        remark: json['remarks'] as String,
+      );
 
-  Map<String, dynamic> toJson() => _$StockModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'date': date,
+      'symbol': symbol,
+      'securityName': securityName,
+      'clientName': clientName,
+      'tradeType': tradeType,
+      'quantityTraded': quantityTraded,
+      'tradePrice': tradePrice,
+      'remarks': remark,
+    };
+  }
 
   @visibleForTesting
   const StockModel.empty()
