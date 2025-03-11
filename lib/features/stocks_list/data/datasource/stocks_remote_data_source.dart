@@ -58,7 +58,7 @@ class StocksRemoteDataSourceImpl implements StocksRemoteDataSource {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: "Something went wrong", errorCode: 505);
+      throw ApiException(message: "Something went wrong - $e", errorCode: 505);
     }
   }
 }
