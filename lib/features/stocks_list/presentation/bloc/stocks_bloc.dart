@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sahaj_dhan/core/errors/failure.dart';
 import 'package:sahaj_dhan/features/stocks_list/domain/entities/filter.dart';
@@ -50,7 +51,7 @@ class StocksBloc extends Bloc<StocksEvent, StocksState> {
         },
       );
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       throw ApiFailure(message: "$e", errorCode: -1);
     }
   }

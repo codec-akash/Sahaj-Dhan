@@ -14,12 +14,11 @@ class LongTermStockRepoImpl implements LongTermStocksRepo {
       : _longTermStocksRemoteDataSource = longTermStocksRemoteDataSource;
 
   @override
-  FutureResult<List<LongTermStocks>> getLongTermStocksList(
+  FutureResult<List<LongTermStock>> getLongTermStocksList(
       {required bool isHistorical, required int page}) async {
     try {
-      List<LongTermStocks> longTermStocks =
-          await _longTermStocksRemoteDataSource.getLongTermStocks(
-              isHistoric: isHistorical, page: page);
+      List<LongTermStock> longTermStocks = await _longTermStocksRemoteDataSource
+          .getLongTermStocks(isHistoric: isHistorical, page: page);
 
       return Right(longTermStocks);
     } on ApiException catch (e) {

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/extensions/context_extension.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
-import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stock_card.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stocks_datelist.dart';
 
 class LongTermMain extends StatefulWidget {
   const LongTermMain({super.key});
@@ -16,7 +16,7 @@ class LongTermMain extends StatefulWidget {
 class _LongTermMainState extends State<LongTermMain> {
   int page = 0;
   final ScrollController _scrollController = ScrollController();
-  List<LongTermStocks> longTermStocks = List.empty(growable: true);
+  Map<String, List<LongTermStock>> longTermStocks = {};
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _LongTermMainState extends State<LongTermMain> {
             listener: (context, state) {
               if (state is LongTermListLoaded) {
                 setState(() {
-                  longTermStocks.addAll(state.longTermStocks);
+                  longTermStocks = state.longTermStocks;
                 });
               }
               if (state is LongTermFailedState) {
@@ -62,9 +62,11 @@ class _LongTermMainState extends State<LongTermMain> {
             child: SliverToBoxAdapter(),
           ),
           SliverList.builder(
-            itemCount: longTermStocks.length,
-            itemBuilder: (context, index) =>
-                LongTermStockCard(longTermStocks: longTermStocks[index]),
+            itemCount: longTermStocks.entries.length,
+            itemBuilder: (context, index) => LongTermStocksDateList(
+              date: longTermStocks.entries.elementAt(index).key,
+              dateStocks: longTermStocks.entries.elementAt(index).value,
+            ),
           ),
           BlocBuilder<LongTermBloc, LongTermState>(
             builder: (context, state) {

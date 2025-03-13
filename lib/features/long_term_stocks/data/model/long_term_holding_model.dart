@@ -1,6 +1,6 @@
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 
-class LongTermHoldingModel extends LongTermStocks {
+class LongTermHoldingModel extends LongTermStock {
   const LongTermHoldingModel({
     required super.id,
     required super.clientName,

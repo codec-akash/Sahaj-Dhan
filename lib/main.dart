@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => LongTermBloc(
               getLongTermStocksUsecase: di(),
+              longTermStockService: di(),
             ),
           )
         ],

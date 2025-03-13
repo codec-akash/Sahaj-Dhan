@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
-import 'package:sahaj_dhan/features/stocks_list/domain/entities/stock.dart';
-import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stock_card.dart';
 
-class StockDateList extends StatefulWidget {
+class LongTermStocksDateList extends StatelessWidget {
   final String date;
-  final List<Stock> dateStocks;
-  const StockDateList({
+  final List<LongTermStock> dateStocks;
+  const LongTermStocksDateList({
     super.key,
-    required this.dateStocks,
     required this.date,
+    required this.dateStocks,
   });
 
-  @override
-  State<StockDateList> createState() => _StockDateListState();
-}
-
-class _StockDateListState extends State<StockDateList> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,13 +28,13 @@ class _StockDateListState extends State<StockDateList> {
             ],
           )),
           child: Text(
-            widget.date,
+            date,
             style: CustomTextTheme.text24,
           ),
         ),
         Column(
-          children: widget.dateStocks
-              .map((stock) => StockCard(stock: stock))
+          children: dateStocks
+              .map((stock) => LongTermStockCard(longTermStocks: stock))
               .toList(),
         )
       ],

@@ -1,6 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'dart:ui';
 
-class LongTermStocks extends Equatable {
+import 'package:equatable/equatable.dart';
+import 'package:sahaj_dhan/core/utils/colors.dart';
+
+class LongTermStock extends Equatable {
   final int id;
   final String clientName;
   final String symbol;
@@ -18,7 +21,10 @@ class LongTermStocks extends Equatable {
   final String createdAt;
   final String updatedAt;
 
-  const LongTermStocks({
+  Color get capitalGainColor =>
+      gainLossPercentage < 0 ? AppColor.sellTextColor : AppColor.buyTextColor;
+
+  const LongTermStock({
     required this.id,
     required this.clientName,
     required this.symbol,

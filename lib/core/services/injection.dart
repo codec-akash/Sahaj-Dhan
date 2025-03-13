@@ -4,6 +4,7 @@ import 'package:sahaj_dhan/core/network/network_helper.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/data/datasource/lts_remote_data_source.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/data/repository/long_term_stock_repo_impl.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/repositories/long_term_stocks_repo.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/domain/services/long_term_stock_service.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/usecases/get_long_term_stocks_usecase.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/data/datasource/stocks_remote_data_source.dart';
@@ -34,7 +35,9 @@ Future<void> init() async {
     ..registerSingleton<ApiClient>(ApiClient());
 
   di
-    ..registerFactory(() => LongTermBloc(getLongTermStocksUsecase: di()))
+    ..registerFactory(() => LongTermBloc(
+        getLongTermStocksUsecase: di(), longTermStockService: di()))
+    ..registerLazySingleton(() => LongTermStockService())
     ..registerLazySingleton(() => GetLongTermStocksUsecase(di()))
     ..registerLazySingleton<LongTermStocksRepo>(
         () => LongTermStockRepoImpl(longTermStocksRemoteDataSource: di()))

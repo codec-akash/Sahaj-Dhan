@@ -18,7 +18,7 @@ class LongTermFailedState extends LongTermState {
 }
 
 class LongTermListLoaded extends LongTermState {
-  final List<LongTermStocks> longTermStocks;
+  final Map<String, List<LongTermStock>> longTermStocks;
 
   const LongTermListLoaded(this.longTermStocks);
 
