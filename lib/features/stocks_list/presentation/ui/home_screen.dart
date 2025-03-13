@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
+import 'package:sahaj_dhan/core/widgets/button.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_main.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stocks_filter.dart';
@@ -35,13 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Sahaj Dhan"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => StocksFilterMain()));
-        },
-        child: Icon(Icons.filter_list_sharp),
-      ),
       body: RefreshIndicator.adaptive(
         onRefresh: () async {
           Completer loadInitFuture = Completer<void>();
@@ -58,6 +53,33 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Column(
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Button(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LongTermMain()));
+                      },
+                      title: "HODL Stocks",
+                    ),
+                  ),
+                  SizedBox(width: 50.w),
+                  Expanded(
+                    child: Button(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StocksFilterMain()));
+                      },
+                      title: "All Stocks List",
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 20.h),
             Row(
               children: [
                 Text(

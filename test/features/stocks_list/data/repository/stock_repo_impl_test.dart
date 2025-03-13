@@ -21,7 +21,7 @@ void main() {
 
   const tException = ApiException(
     message: "Something went wrong",
-    errorCode: 505,
+    errorCode: -1,
   );
 
   group("getStockList", () {

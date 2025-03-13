@@ -19,7 +19,7 @@ void main() {
   late StocksService stocksService;
 
   const ApiFailure apiFailure =
-      ApiFailure(message: "something went wrong", errorCode: 505);
+      ApiFailure(message: "something went wrong", errorCode: -1);
 
   setUp(() {
     getStocksList = MockGetStocks();
