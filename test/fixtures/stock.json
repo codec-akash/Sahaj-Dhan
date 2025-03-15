@@ -1,0 +1,11 @@
+{
+    "id": 1,
+    "date": "_empty.date",
+    "symbol": "_empty.symbol",
+    "securityName": "_empty.securityName",
+    "clientName": "_empty.clientName",
+    "tradeType": "_empty.tradeType",
+    "quantityTraded": 1,
+    "tradePrice": "_empty.tradePrice",
+    "remarks": "_empty.remark"
+}

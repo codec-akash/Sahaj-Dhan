@@ -1,23 +1,23 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sahaj_dhan/blocs/stocks_bloc/stock_bloc.dart';
-import 'package:sahaj_dhan/blocs/user_bloc/user_bloc.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
+import 'package:sahaj_dhan/core/theme/theme_config.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
 import 'package:sahaj_dhan/firebase_options.dart';
-import 'package:sahaj_dhan/screens/splash_screen/splash_screen.dart';
-import 'package:sahaj_dhan/utils/app_color.dart';
-import 'package:sahaj_dhan/utils/mixpanel_manager.dart';
-import 'package:sahaj_dhan/utils/strings.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
+import 'package:sahaj_dhan/features/stocks_list/presentation/ui/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await MixpanelManager.init();
   final directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
 
@@ -28,18 +28,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  ThemeData _buildTheme(brightness) {
-    var baseTheme = ThemeData(
-      brightness: brightness,
-      useMaterial3: true,
-      scaffoldBackgroundColor: AppColor.backgroundColorDark,
-    );
-
-    return baseTheme.copyWith(
-      textTheme: GoogleFonts.notoSansTextTheme(baseTheme.textTheme),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -48,18 +36,25 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<StockBloc>(
-            create: (context) => StockBloc(),
+          BlocProvider(
+            create: (context) => StocksBloc(
+              getStockList: di(),
+              getStockFilter: di(),
+              stocksService: di(),
+            ),
           ),
-          BlocProvider<UserBloc>(
-            create: (context) => UserBloc(),
-          ),
+          BlocProvider(
+            create: (context) => LongTermBloc(
+              getLongTermStocksUsecase: di(),
+              longTermStockService: di(),
+            ),
+          )
         ],
         child: MaterialApp(
-          title: Strings.appName,
-          theme: _buildTheme(Brightness.dark),
+          title: "Sahaj Dhan",
           debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+          theme: ThemeConfig.lightTheme(),
+          home: HomeScreen(),
         ),
       ),
     );
