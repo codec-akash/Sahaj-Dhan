@@ -13,16 +13,27 @@ class GetLongTermStocksUsecase extends BaseUsecaseWithParams<
   FutureResult<List<LongTermStock>> call(
       GetLongTermStocksUsecaseParams params) {
     return _longTermStocksRepo.getLongTermStocksList(
-        isHistorical: params.isHistorical, page: params.page);
+      isHistorical: params.isHistorical,
+      page: params.page,
+      profitType: params.profitType,
+      showHighestSort: params.showHighestSort,
+      monthlySortType: params.monthlySortType,
+    );
   }
 }
 
 class GetLongTermStocksUsecaseParams {
   final bool isHistorical;
   final int page;
+  final bool? profitType;
+  final bool? monthlySortType;
+  final bool? showHighestSort;
 
   const GetLongTermStocksUsecaseParams({
     required this.isHistorical,
     required this.page,
+    this.profitType,
+    this.monthlySortType,
+    this.showHighestSort,
   });
 }

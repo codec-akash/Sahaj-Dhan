@@ -24,7 +24,7 @@ class LongTermStockCard extends StatelessWidget {
           stops: [0.7, 1.0],
           colors: [
             Colors.transparent,
-            longTermStocks.capitalGainColor.withOpacity(0.2),
+            longTermStocks.capitalGainColor.withOpacity(0.4),
           ],
         ),
       ),
@@ -85,7 +85,7 @@ class LongTermStockCard extends StatelessWidget {
             children: [
               Text(
                 "${longTermStocks.gainLossPercentage}%",
-                style: CustomTextTheme.text16
+                style: CustomTextTheme.text16Bold
                     .copyWith(color: longTermStocks.capitalGainColor),
               ),
               Text(

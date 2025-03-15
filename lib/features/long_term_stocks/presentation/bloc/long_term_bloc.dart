@@ -28,12 +28,18 @@ class LongTermBloc extends Bloc<LongTermEvent, LongTermState> {
       GetLongTermStockListEvent event, Emitter<LongTermState> emit) async {
     try {
       final result = await _getLongTermStocksUsecase.call(
-          GetLongTermStocksUsecaseParams(
-              isHistorical: event.isHistorical, page: event.page));
+        GetLongTermStocksUsecaseParams(
+          isHistorical: event.isHistorical,
+          page: event.page,
+          profitType: event.profitType,
+          monthlySortType: event.monthlySortType,
+          showHighestSort: event.showHighestSort,
+        ),
+      );
       result.fold(
         (left) => emit(LongTermFailedState(left.errorMessgae)),
         (longTermStocks) {
-          if (event.page == 0) {
+          if (event.page == 1) {
             _longTermStocks.clear();
           }
           Map<String, List<LongTermStock>> mappedStock =

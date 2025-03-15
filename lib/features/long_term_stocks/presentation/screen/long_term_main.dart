@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/extensions/context_extension.dart';
+import 'package:sahaj_dhan/core/utils/constant.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/filter_drawer.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stocks_datelist.dart';
 
 class LongTermMain extends StatefulWidget {
@@ -14,7 +16,15 @@ class LongTermMain extends StatefulWidget {
 }
 
 class _LongTermMainState extends State<LongTermMain> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  // * fitlers and pagination
   int page = 0;
+  bool isHistorical = false;
+  bool? profitOnly;
+  bool? highestSort;
+  bool? monthWiseTrade;
+
   final ScrollController _scrollController = ScrollController();
   Map<String, List<LongTermStock>> longTermStocks = {};
 
@@ -34,16 +44,54 @@ class _LongTermMainState extends State<LongTermMain> {
 
   void _loadHodlStocks() {
     page++;
-    context
-        .read<LongTermBloc>()
-        .add(GetLongTermStockListEvent(isHistorical: false, page: page));
+    context.read<LongTermBloc>().add(GetLongTermStockListEvent(
+          page: page,
+          isHistorical: isHistorical,
+          profitType: profitOnly,
+          monthlySortType: monthWiseTrade,
+          showHighestSort: highestSort,
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("HODL by sharks"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
+            icon: Icon(Icons.filter_alt_outlined),
+          )
+        ],
+      ),
+      endDrawer: FilterDrawer(
+        openPositions: isHistorical,
+        profitOnly: profitOnly,
+        monthwiseTrade: monthWiseTrade,
+        highest: highestSort,
+        onApplyTap: (
+            {highest,
+            required isHistorical,
+            profitOnly,
+            tradeMonthWise}) async {
+          setState(() {
+            this.isHistorical = isHistorical;
+            this.profitOnly = profitOnly;
+            monthWiseTrade = tradeMonthWise;
+            highestSort = highest;
+            page = 0;
+          });
+          await _scrollController.animateTo(
+            0,
+            duration: Constant.duration500,
+            curve: Curves.easeInOut,
+          );
+          _loadHodlStocks();
+        },
       ),
       body: CustomScrollView(
         controller: _scrollController,

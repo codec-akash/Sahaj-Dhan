@@ -21,6 +21,7 @@ class Button extends StatelessWidget {
         child: Text(
           title,
           style: CustomTextTheme.text12.copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
         ),
       ),
     );

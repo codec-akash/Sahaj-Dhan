@@ -8,10 +8,16 @@ class LongTermEvent extends Equatable {
 }
 
 class GetLongTermStockListEvent extends LongTermEvent {
-  final bool isHistorical;
   final int page;
+  final bool isHistorical;
+  final bool? profitType;
+  final bool? monthlySortType;
+  final bool? showHighestSort;
   const GetLongTermStockListEvent({
     required this.page,
     required this.isHistorical,
+    this.profitType,
+    this.monthlySortType,
+    this.showHighestSort,
   });
 }

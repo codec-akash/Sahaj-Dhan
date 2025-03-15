@@ -31,7 +31,7 @@ class LongTermHoldingModel extends LongTermStock {
         averageBuyPrice: json['averageBuyPrice'],
         latestPrice: json['latestPrice'],
         status: json['status'],
-        isLongTerm: json['isLongTerm'],
+        isLongTerm: json['isLongTerm'] == 1,
         gainLossPercentage: double.tryParse(json['gainLossPercentage']) ?? 0,
         holdingDuration: json['holdingDuration'],
         closedDate: json['closedDate'],

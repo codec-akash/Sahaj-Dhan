@@ -4,4 +4,5 @@ class Strings {
   static const String trader = "Trader: ";
   static const String rupee = "₹";
   static const String inr = "INR";
+  static const String apply = "Apply";
 }

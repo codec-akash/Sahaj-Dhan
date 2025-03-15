@@ -20,6 +20,11 @@ class CustomTextTheme extends TextStyle {
     height: 20.h / 16.h,
     fontWeight: FontWeight.w400,
   );
+  static TextStyle text16Bold = TextStyle(
+    fontSize: 16.h,
+    height: 20.h / 16.h,
+    fontWeight: FontWeight.w700,
+  );
 
   static TextStyle text14 = TextStyle(
     fontSize: 14.h,
