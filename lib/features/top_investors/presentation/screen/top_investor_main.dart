@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
+import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_card.dart';
 
 class TopInvestorMain extends StatefulWidget {
   const TopInvestorMain({super.key});
@@ -39,7 +40,7 @@ class _TopInvestorMainState extends State<TopInvestorMain> {
             return ListView.separated(
               itemCount: state.topInvestors.length,
               itemBuilder: (context, index) =>
-                  Text(state.topInvestors[index].clientName),
+                  TopInvestorCard(topInvestor: state.topInvestors[index]),
               separatorBuilder: (context, index) => SizedBox(height: 10.h),
             );
           }
