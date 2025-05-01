@@ -138,4 +138,10 @@ class _LongTermMainState extends State<LongTermMain> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 }

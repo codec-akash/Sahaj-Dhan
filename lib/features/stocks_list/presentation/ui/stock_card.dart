@@ -18,7 +18,7 @@ class StockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 1),
       decoration: BoxDecoration(
         color: stock.stockDealType.color.withOpacity(0.45),
       ),

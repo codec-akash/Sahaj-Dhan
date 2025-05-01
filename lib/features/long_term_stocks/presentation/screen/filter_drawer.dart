@@ -34,6 +34,8 @@ class _FilterDrawerState extends State<FilterDrawer> {
   bool? highest;
   bool? monthwiseTrade;
 
+  bool isApplyFilteredTap = false;
+
   @override
   void initState() {
     openPositions = widget.openPositions;
@@ -204,6 +206,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                     profitOnly: profitOnly,
                     tradeMonthWise: monthwiseTrade,
                   );
+                  isApplyFilteredTap = true;
                   Navigator.of(context).pop();
                 },
                 title: Strings.apply,
@@ -213,5 +216,18 @@ class _FilterDrawerState extends State<FilterDrawer> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    if (isApplyFilteredTap == false) {
+      widget.onApplyTap(
+        isHistorical: openPositions,
+        highest: highest,
+        profitOnly: profitOnly,
+        tradeMonthWise: monthwiseTrade,
+      );
+    }
+    super.dispose();
   }
 }
