@@ -18,6 +18,7 @@ class Button extends StatefulWidget {
 class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  double buttonAnimatePadding = 5;
 
   @override
   void initState() {
@@ -26,15 +27,11 @@ class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 5, end: 0).animate(CurvedAnimation(
+    _animation = Tween<double>(begin: buttonAnimatePadding, end: 0)
+        .animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     ));
-    _controller.addListener(() {
-      if (_controller.isCompleted) {
-        widget.onTap();
-      }
-    });
   }
 
   @override
@@ -45,7 +42,9 @@ class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
 
   void _handleTap() {
     _controller.forward().then((_) {
-      _controller.reverse();
+      _controller.reverse().then((_) {
+        widget.onTap(); // Call onTap after the reverse animation completes
+      });
     });
   }
 
@@ -55,7 +54,8 @@ class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
       children: [
         Positioned.fill(
           left: 0,
-          right: 0,
+          right: buttonAnimatePadding,
+          top: buttonAnimatePadding,
           child: Container(
             color: Colors.black,
           ),
@@ -93,7 +93,7 @@ class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 5),
+                  SizedBox(height: buttonAnimatePadding),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: Container(
@@ -109,7 +109,7 @@ class ButtonState extends State<Button> with SingleTickerProviderStateMixin {
                   ),
                 ],
               ),
-              SizedBox(width: 5)
+              SizedBox(width: buttonAnimatePadding)
             ],
           ),
         ),

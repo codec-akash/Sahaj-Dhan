@@ -9,6 +9,8 @@ import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_te
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stocks_filter.dart';
+import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_button.dart';
+import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Column(
           children: [
+            SizedBox(height: 10.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
@@ -77,6 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                 ],
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: TopInvestorButton(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => TopInvestorMain()));
+                },
               ),
             ),
             SizedBox(height: 20.h),
