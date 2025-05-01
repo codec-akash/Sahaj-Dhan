@@ -50,15 +50,15 @@ class _StocksFilterMainState extends State<StocksFilterMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("All Stocks Data"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_alt_outlined),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => FilterList()));
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.filter_alt_outlined),
+        //     onPressed: () {
+        //       Navigator.of(context)
+        //           .push(MaterialPageRoute(builder: (context) => FilterList()));
+        //     },
+        //   ),
+        // ],
       ),
       body: CustomScrollView(
         controller: _scrollController,

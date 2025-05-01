@@ -38,6 +38,12 @@ class CustomTextTheme extends TextStyle {
     fontWeight: FontWeight.w400,
   );
 
+  static TextStyle text12Bold = TextStyle(
+    fontSize: 12.h,
+    height: 14.h / 12.h,
+    fontWeight: FontWeight.w700,
+  );
+
   static TextStyle text10 = TextStyle(
     fontSize: 10.h,
     height: 14.h / 10.h,

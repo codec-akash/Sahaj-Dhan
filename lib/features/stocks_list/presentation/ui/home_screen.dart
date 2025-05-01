@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => LongTermMain()));
                       },
-                      title: "HODL Stocks",
+                      title: "Top Stocks",
                     ),
                   ),
                   SizedBox(width: 50.w),
