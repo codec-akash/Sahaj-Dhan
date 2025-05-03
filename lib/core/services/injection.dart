@@ -17,6 +17,7 @@ import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.da
 import 'package:sahaj_dhan/features/top_investors/data/datasources/top_investor_data_source.dart';
 import 'package:sahaj_dhan/features/top_investors/data/repository/top_investor_repo_impl.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/repositories/top_investor_repo.dart';
+import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_investor_holdings.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_top_investor_usecase.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
 
@@ -53,8 +54,10 @@ Future<void> init() async {
 
   // * Top Investors
   di
-    ..registerFactory(() => TopInvestorBloc(topInvestorUsecase: di()))
+    ..registerFactory(() =>
+        TopInvestorBloc(topInvestorUsecase: di(), getInvestorHoldings: di()))
     ..registerLazySingleton(() => GetTopInvestorUsecase(di()))
+    ..registerLazySingleton(() => GetInvestorHoldings(topInvestorRepo: di()))
     ..registerLazySingleton<TopInvestorRepo>(
         () => TopInvestorRepoImpl(topInvestorDataSource: di()))
     ..registerLazySingleton<TopInvestorDataSource>(

@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => TopInvestorBloc(
               topInvestorUsecase: di(),
+              getInvestorHoldings: di(),
             ),
           )
         ],

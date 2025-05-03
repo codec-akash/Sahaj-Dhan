@@ -16,8 +16,9 @@ class TopInvestorLoadingState extends TopInvestorState {
 
 class TopInvestorFailedState extends TopInvestorState {
   final String message;
+  final TopInvestorEvent topInvestorEvent;
 
-  const TopInvestorFailedState(this.message);
+  const TopInvestorFailedState(this.message, this.topInvestorEvent);
 
   @override
   List<Object?> get props => [message];
@@ -30,4 +31,10 @@ class TopInvestorLoadedState extends TopInvestorState {
 
   @override
   List<Object?> get props => [topInvestors];
+}
+
+class InvestorHoldingLoaded extends TopInvestorState {
+  final InvestorHolding investorHolding;
+
+  const InvestorHoldingLoaded(this.investorHolding);
 }
