@@ -8,7 +8,8 @@ import 'package:sahaj_dhan/features/top_investors/data/model/top_investor_model.
 abstract class TopInvestorDataSource {
   Future<List<TopInvestorModel>> getTopInvestors();
 
-  Future<InvestorHoldingModel> getInvestorHoldings(String clientName);
+  Future<InvestorHoldingModel> getInvestorHoldings(String clientName,
+      {String? holdingType});
 }
 
 class TopInvestorDataSourceImpl implements TopInvestorDataSource {
@@ -41,10 +42,13 @@ class TopInvestorDataSourceImpl implements TopInvestorDataSource {
   }
 
   @override
-  Future<InvestorHoldingModel> getInvestorHoldings(String clientName) async {
+  Future<InvestorHoldingModel> getInvestorHoldings(String clientName,
+      {String? holdingType}) async {
     try {
       final Response response = await _apiHelper.execute(
-          method: Method.get, url: ApiUrl.investorHolding(clientName));
+          method: Method.get,
+          url: ApiUrl.investorHolding(clientName),
+          queryParameters: {"holding": holdingType});
 
       if (response.data != null) {
         var responseData = response.data;

@@ -39,7 +39,9 @@ class TopInvestorBloc extends Bloc<TopInvestorEvent, TopInvestorState> {
 
   Future<void> _getInvestorHoldindsHandler(
       LoadInvestorHoldings event, Emitter<TopInvestorState> emit) async {
-    final result = await _getInvestorHoldings.call(event.clientName);
+    final result = await _getInvestorHoldings.call(GetInvestorHoldingsParams(
+        event.clientName,
+        holdingType: event.holdingType));
 
     result.fold(
         (left) => emit(TopInvestorFailedState(left.errorMessgae, event)),

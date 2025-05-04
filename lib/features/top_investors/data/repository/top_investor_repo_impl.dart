@@ -27,10 +27,11 @@ class TopInvestorRepoImpl implements TopInvestorRepo {
   }
 
   @override
-  FutureResult<InvestorHolding> getInvestorHoldings(String clientName) async {
+  FutureResult<InvestorHolding> getInvestorHoldings(String clientName,
+      {String? holdingType}) async {
     try {
-      InvestorHolding investorHolding =
-          await _topInvestorDataSource.getInvestorHoldings(clientName);
+      InvestorHolding investorHolding = await _topInvestorDataSource
+          .getInvestorHoldings(clientName, holdingType: holdingType);
 
       return Right(investorHolding);
     } on ApiException catch (e) {

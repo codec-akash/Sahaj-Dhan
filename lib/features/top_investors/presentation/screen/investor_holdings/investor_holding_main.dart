@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
+import 'package:sahaj_dhan/core/types/stock_holding_type.dart';
 import 'package:sahaj_dhan/core/utils/colors.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stock_card.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/entities/investor_holding.dart';
@@ -22,6 +23,12 @@ class InvestorHoldingMain extends StatefulWidget {
 class _InvestorHoldingMainState extends State<InvestorHoldingMain> {
   InvestorMetrics? investorMetrics;
 
+  List<StockHoldingType> stockHoldingTypes = [
+    StockHoldingType.all,
+    StockHoldingType.closed,
+    StockHoldingType.open
+  ];
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -30,6 +37,12 @@ class _InvestorHoldingMainState extends State<InvestorHoldingMain> {
           .add(LoadInvestorHoldings(widget.investor.clientName));
     });
     super.initState();
+  }
+
+  void updateTradeHistoryList(StockHoldingType stockHoldingType) {
+    context.read<TopInvestorBloc>().add(LoadInvestorHoldings(
+        widget.investor.clientName,
+        holdingType: stockHoldingType.value));
   }
 
   @override
@@ -47,11 +60,17 @@ class _InvestorHoldingMainState extends State<InvestorHoldingMain> {
             ),
             actions: [
               PopupMenuButton(
-                itemBuilder: (context) => [
-                  PopupMenuItem(child: Text("All")),
-                  PopupMenuItem(child: Text("Closed Deals")),
-                  PopupMenuItem(child: Text("Open Deals")),
-                ],
+                itemBuilder: (context) => stockHoldingTypes
+                    .map(
+                      (element) => PopupMenuItem(
+                        value: element.value,
+                        onTap: () {
+                          updateTradeHistoryList(element);
+                        },
+                        child: Text(element.title),
+                      ),
+                    )
+                    .toList(),
               )
             ],
             pinned: true,

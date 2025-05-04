@@ -4,7 +4,7 @@ import 'package:sahaj_dhan/features/top_investors/domain/entities/investor_holdi
 import 'package:sahaj_dhan/features/top_investors/domain/repositories/top_investor_repo.dart';
 
 class GetInvestorHoldings
-    extends BaseUsecaseWithParams<InvestorHolding, String> {
+    extends BaseUsecaseWithParams<InvestorHolding, GetInvestorHoldingsParams> {
   final TopInvestorRepo _topInvestorRepo;
 
   const GetInvestorHoldings({required TopInvestorRepo topInvestorRepo})
@@ -12,6 +12,14 @@ class GetInvestorHoldings
 
   @override
   FutureResult<InvestorHolding> call(params) {
-    return _topInvestorRepo.getInvestorHoldings(params);
+    return _topInvestorRepo.getInvestorHoldings(params.clientName,
+        holdingType: params.holdingType);
   }
+}
+
+class GetInvestorHoldingsParams {
+  final String clientName;
+  final String? holdingType;
+
+  const GetInvestorHoldingsParams(this.clientName, {this.holdingType});
 }

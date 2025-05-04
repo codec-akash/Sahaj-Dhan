@@ -5,5 +5,6 @@ import 'package:sahaj_dhan/features/top_investors/domain/entities/top_investor.d
 abstract class TopInvestorRepo {
   FutureResult<List<TopInvestor>> getTopInvestors();
 
-  FutureResult<InvestorHolding> getInvestorHoldings(String clientName);
+  FutureResult<InvestorHolding> getInvestorHoldings(String clientName,
+      {String? holdingType});
 }
