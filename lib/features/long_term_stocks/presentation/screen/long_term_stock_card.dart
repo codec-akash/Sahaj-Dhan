@@ -9,9 +9,11 @@ import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_s
 
 class LongTermStockCard extends StatelessWidget {
   final LongTermStock longTermStocks;
+  final bool showClientName;
   const LongTermStockCard({
     super.key,
     required this.longTermStocks,
+    this.showClientName = true,
   });
 
   @override
@@ -63,19 +65,21 @@ class LongTermStockCard extends StatelessWidget {
                       ]),
                 ),
                 SizedBox(height: 5.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        longTermStocks.clientName.trim(),
-                        style: CustomTextTheme.text14,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                if (showClientName) ...[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          longTermStocks.clientName.trim(),
+                          style: CustomTextTheme.text14,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),

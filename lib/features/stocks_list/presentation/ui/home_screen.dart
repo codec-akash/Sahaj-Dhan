@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sahaj Dhan"),
+        title: Text("Sahi Stocks"),
       ),
       body: RefreshIndicator.adaptive(
         onRefresh: () async {

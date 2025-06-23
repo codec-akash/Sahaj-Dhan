@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sahaj_dhan/core/extensions/widget_extension.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/utils/colors.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/entities/top_investor.dart';
+import 'package:sahaj_dhan/features/top_investors/presentation/screen/investor_holdings/investor_holding_main.dart';
 
 class TopInvestorCard extends StatelessWidget {
   final TopInvestor topInvestor;
@@ -31,25 +31,31 @@ class TopInvestorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            topInvestor.clientName,
-            style: CustomTextTheme.text14,
-          ),
-          SizedBox(height: 8.h),
-          textInfoWidget(
-              "Total Profitable Trades -", " ${topInvestor.profitableTrades}#"),
-          SizedBox(height: 4.h),
-          textInfoWidget(
-              "Avg. Profit% -", " ${topInvestor.averageGainPercentage}%"),
-          SizedBox(height: 4.h),
-          textInfoWidget(
-              "Highest Profit% -", " ${topInvestor.highestGainPercentage}%"),
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => InvestorHoldingMain(investor: topInvestor)));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              topInvestor.clientName,
+              style: CustomTextTheme.text14,
+            ),
+            SizedBox(height: 8.h),
+            textInfoWidget("Total Profitable Trades -",
+                " ${topInvestor.profitableTrades}#"),
+            SizedBox(height: 4.h),
+            textInfoWidget(
+                "Avg. Profit% -", " ${topInvestor.averageGainPercentage}%"),
+            SizedBox(height: 4.h),
+            textInfoWidget(
+                "Highest Profit% -", " ${topInvestor.highestGainPercentage}%"),
+          ],
+        ),
       ),
     );
   }

@@ -7,3 +7,13 @@ class TopInvestorEvent extends Equatable {
 }
 
 class LoadTopInvestors extends TopInvestorEvent {}
+
+class LoadInvestorHoldings extends TopInvestorEvent {
+  final String clientName;
+  final String? holdingType;
+
+  const LoadInvestorHoldings(this.clientName, {this.holdingType});
+
+  @override
+  List<Object?> get props => [clientName];
+}

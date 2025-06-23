@@ -27,7 +27,11 @@ class _TopInvestorMainState extends State<TopInvestorMain> {
       body: BlocBuilder<TopInvestorBloc, TopInvestorState>(
         bloc: context.read<TopInvestorBloc>(),
         buildWhen: (previous, current) {
-          if (previous != current) {
+          if ((current is TopInvestorLoadedState) ||
+              (current is TopInvestorLoadingState &&
+                  (current.topInvestorEvent is LoadTopInvestors)) ||
+              (current is TopInvestorFailedState &&
+                  (current.topInvestorEvent is LoadTopInvestors))) {
             return true;
           }
           return false;
