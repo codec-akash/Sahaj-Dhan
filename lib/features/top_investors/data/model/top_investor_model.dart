@@ -1,7 +1,7 @@
 import 'package:sahaj_dhan/features/top_investors/domain/entities/top_investor.dart';
 
 class TopInvestorModel extends TopInvestor {
-  TopInvestorModel({
+  const TopInvestorModel({
     required super.clientName,
     required super.profitableTrades,
     required super.averageGainPercentage,
