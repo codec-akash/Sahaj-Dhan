@@ -15,10 +15,13 @@ class FilterModel extends Filter {
           tradeType: tradeType,
         );
 
+  @override
   @HiveField(0)
   final List<String> clientName;
+  @override
   @HiveField(1)
   final List<StocksFilter> stocksFilter;
+  @override
   @HiveField(2)
   final List<String> tradeType;
 

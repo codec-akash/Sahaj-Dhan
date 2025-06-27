@@ -10,8 +10,10 @@ class StockFilterModel extends StocksFilter {
     required this.symbol,
   }) : super(securityName: securityName, symbol: symbol);
 
+  @override
   @HiveField(0)
   final String securityName;
+  @override
   @HiveField(1)
   final String symbol;
 
