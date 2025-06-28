@@ -9,7 +9,7 @@ class TopInvestorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       onTap: onTap,
-      title: "Check Top Investors",
+      title: "Top Investors",
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/widgets/button.dart';
+import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_main.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
@@ -56,42 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             SizedBox(height: 10.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Button(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LongTermMain()));
-                      },
-                      title: "Top Stocks",
-                    ),
-                  ),
-                  SizedBox(width: 50.w),
-                  Expanded(
-                    child: Button(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => StocksFilterMain()));
-                      },
-                      title: "All Stocks List",
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: TopInvestorButton(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => TopInvestorMain()));
-                },
-              ),
-            ),
+            HomePageButtons(),
             SizedBox(height: 20.h),
             Row(
               children: [

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/extensions/context_extension.dart';
+import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/utils/constant.dart';
+import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/filter_drawer.dart';
@@ -58,44 +60,54 @@ class _LongTermMainState extends State<LongTermMain> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("HODL by sharks"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-            icon: Icon(Icons.filter_alt_outlined),
-          )
-        ],
+        title: Text("Sahi Stocks"),
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       _scaffoldKey.currentState!.openEndDrawer();
+        //     },
+        //     icon: Icon(Icons.filter_alt_outlined),
+        //   )
+        // ],
       ),
-      endDrawer: FilterDrawer(
-        openPositions: isHistorical,
-        profitOnly: profitOnly,
-        monthwiseTrade: monthWiseTrade,
-        highest: highestSort,
-        onApplyTap: (
-            {highest,
-            required isHistorical,
-            profitOnly,
-            tradeMonthWise}) async {
-          setState(() {
-            this.isHistorical = isHistorical;
-            this.profitOnly = profitOnly;
-            monthWiseTrade = tradeMonthWise;
-            highestSort = highest;
-            page = 0;
-          });
-          await _scrollController.animateTo(
-            0,
-            duration: Constant.duration500,
-            curve: Curves.easeInOut,
-          );
-          _loadHodlStocks();
-        },
-      ),
+      // endDrawer: FilterDrawer(
+      //   openPositions: isHistorical,
+      //   profitOnly: profitOnly,
+      //   monthwiseTrade: monthWiseTrade,
+      //   highest: highestSort,
+      //   onApplyTap: (
+      //       {highest,
+      //       required isHistorical,
+      //       profitOnly,
+      //       tradeMonthWise}) async {
+      //     setState(() {
+      //       this.isHistorical = isHistorical;
+      //       this.profitOnly = profitOnly;
+      //       monthWiseTrade = tradeMonthWise;
+      //       highestSort = highest;
+      //       page = 0;
+      //     });
+      //     await _scrollController.animateTo(
+      //       0,
+      //       duration: Constant.duration500,
+      //       curve: Curves.easeInOut,
+      //     );
+      //     _loadHodlStocks();
+      //   },
+      // ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
+          SliverToBoxAdapter(child: HomePageButtons()),
+          SliverToBoxAdapter(child: SizedBox(height: 20.h)),
+          SliverToBoxAdapter(
+            child: Text(
+              "Stocks Added By Sharks Today",
+              textAlign: TextAlign.center,
+              style: CustomTextTheme.text16,
+            ),
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 20.h)),
           BlocListener<LongTermBloc, LongTermState>(
             listener: (context, state) {
               if (state is LongTermListLoaded) {

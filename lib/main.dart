@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
+import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_main.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
 import 'package:sahaj_dhan/firebase_options.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
           title: "Sahaj Dhan",
           debugShowCheckedModeBanner: false,
           theme: ThemeConfig.lightTheme(),
-          home: HomeScreen(),
+          home: LongTermMain(),
         ),
       ),
     );
