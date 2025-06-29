@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/extensions/context_extension.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
-import 'package:sahaj_dhan/core/utils/constant.dart';
 import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
-import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/filter_drawer.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stocks_datelist.dart';
 
 class LongTermMain extends StatefulWidget {
