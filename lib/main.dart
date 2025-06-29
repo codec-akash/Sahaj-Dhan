@@ -13,7 +13,6 @@ import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_te
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
 import 'package:sahaj_dhan/firebase_options.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
-import 'package:sahaj_dhan/features/stocks_list/presentation/ui/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

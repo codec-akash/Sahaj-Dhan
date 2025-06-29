@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/widgets/button.dart';
-import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_main.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stocks_filter.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_button.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_main.dart';
