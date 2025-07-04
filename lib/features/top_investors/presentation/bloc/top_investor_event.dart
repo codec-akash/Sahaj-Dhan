@@ -17,3 +17,12 @@ class LoadInvestorHoldings extends TopInvestorEvent {
   @override
   List<Object?> get props => [clientName];
 }
+
+class LoadStocksHoldingInvestors extends TopInvestorEvent {
+  final String stockName;
+
+  const LoadStocksHoldingInvestors(this.stockName);
+
+  @override
+  List<Object?> get props => [stockName];
+}

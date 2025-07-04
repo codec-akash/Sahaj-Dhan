@@ -38,4 +38,17 @@ class TopInvestorRepoImpl implements TopInvestorRepo {
       return Left(ApiFailure.fromExpection(e));
     }
   }
+
+  @override
+  FutureResult<List<TopInvestor>> getStocksHoldingInvestors(
+      String stockName) async {
+    try {
+      List<TopInvestor> topInvestors =
+          await _topInvestorDataSource.getStocksHoldingInvestors(stockName);
+
+      return Right(topInvestors);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromExpection(e));
+    }
+  }
 }

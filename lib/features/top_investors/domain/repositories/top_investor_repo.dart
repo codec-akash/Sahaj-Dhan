@@ -7,4 +7,6 @@ abstract class TopInvestorRepo {
 
   FutureResult<InvestorHolding> getInvestorHoldings(String clientName,
       {String? holdingType});
+
+  FutureResult<List<TopInvestor>> getStocksHoldingInvestors(String stockName);
 }

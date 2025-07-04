@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
             create: (context) => TopInvestorBloc(
               topInvestorUsecase: di(),
               getInvestorHoldings: di(),
+              getStocksHoldingInvestors: di(),
             ),
           )
         ],
