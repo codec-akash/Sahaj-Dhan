@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/extensions/widget_extension.dart';
+import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
+import 'package:sahaj_dhan/core/navigation/route_config.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/utils/constant.dart';
 import 'package:sahaj_dhan/core/utils/number_comma.dart';
 import 'package:sahaj_dhan/core/utils/strings.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
-import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/stocks_holding_investors.dart';
 
 class LongTermStockCard extends StatelessWidget {
   final LongTermStock longTermStocks;
@@ -21,15 +23,11 @@ class LongTermStockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => StocksHoldingInvestors(
-              stockName: longTermStocks.securityName,
-              symbol: longTermStocks.symbol,
-            ),
-          ),
-        );
+        di<NavigationService>()
+            .navigateTo(RouteConfig.stocksHoldingInvestors, arguments: {
+          'stockName': longTermStocks.securityName,
+          'symbol': longTermStocks.symbol,
+        });
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_investor_card.dart';
@@ -13,6 +14,8 @@ class StocksHoldingInvestors extends StatefulWidget {
     required this.stockName,
     required this.symbol,
   });
+
+  static const String routeName = RouteConfig.stocksHoldingInvestors;
 
   @override
   State<StocksHoldingInvestors> createState() => _StocksHoldingInvestorsState();
@@ -73,7 +76,7 @@ class _StocksHoldingInvestorsState extends State<StocksHoldingInvestors> {
               ],
             );
           }
-          if (state is TopInvestorFailedState &&
+          if (state is TopInvestorLoadingState &&
               (state.topInvestorEvent is LoadStocksHoldingInvestors)) {
             return const Center(child: CircularProgressIndicator.adaptive());
           }

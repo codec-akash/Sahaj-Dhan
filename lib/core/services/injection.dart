@@ -21,6 +21,7 @@ import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_investor_
 import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_stocks_holding_investors.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_top_investor_usecase.dart';
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
+import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
 
 final di = GetIt.instance;
 
@@ -67,4 +68,7 @@ Future<void> init() async {
         () => TopInvestorRepoImpl(topInvestorDataSource: di()))
     ..registerLazySingleton<TopInvestorDataSource>(
         () => TopInvestorDataSourceImpl(apihelper: di()));
+
+  // Navigation
+  di.registerLazySingleton<NavigationService>(() => NavigationServiceImpl());
 }
