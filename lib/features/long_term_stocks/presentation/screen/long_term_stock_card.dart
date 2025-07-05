@@ -23,11 +23,13 @@ class LongTermStockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        di<NavigationService>()
-            .navigateTo(RouteConfig.stocksHoldingInvestors, arguments: {
-          'stockName': longTermStocks.securityName,
-          'symbol': longTermStocks.symbol,
-        });
+        if (showClientName) {
+          di<NavigationService>()
+              .navigateTo(RouteConfig.stocksHoldingInvestors, arguments: {
+            'stockName': longTermStocks.securityName,
+            'symbol': longTermStocks.symbol,
+          });
+        }
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
