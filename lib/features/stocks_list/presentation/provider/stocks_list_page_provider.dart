@@ -6,8 +6,7 @@ import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.da
 class StocksListPageProvider extends StatelessWidget {
   final Widget child;
 
-  const StocksListPageProvider({Key? key, required this.child})
-      : super(key: key);
+  const StocksListPageProvider({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
