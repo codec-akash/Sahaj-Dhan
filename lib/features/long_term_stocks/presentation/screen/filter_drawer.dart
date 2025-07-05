@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/utils/strings.dart';
 import 'package:sahaj_dhan/core/widgets/button.dart';
@@ -207,7 +209,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                     tradeMonthWise: monthwiseTrade,
                   );
                   isApplyFilteredTap = true;
-                  Navigator.of(context).pop();
+                  di<NavigationService>().pop();
                 },
                 title: Strings.apply,
               ),

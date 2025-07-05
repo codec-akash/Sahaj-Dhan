@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
+import 'package:sahaj_dhan/core/navigation/route_config.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/utils/colors.dart';
 import 'package:sahaj_dhan/features/top_investors/domain/entities/top_investor.dart';
-import 'package:sahaj_dhan/features/top_investors/presentation/screen/investor_holdings/investor_holding_main.dart';
 
 class TopInvestorCard extends StatelessWidget {
   final TopInvestor topInvestor;
@@ -33,8 +35,10 @@ class TopInvestorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InvestorHoldingMain(investor: topInvestor)));
+        di<NavigationService>()
+            .navigateTo(RouteConfig.investorHolding, arguments: {
+          'investor': topInvestor,
+        });
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),

@@ -38,3 +38,9 @@ class InvestorHoldingLoaded extends TopInvestorState {
 
   const InvestorHoldingLoaded(this.investorHolding);
 }
+
+class StocksHoldingInvestorsLoaded extends TopInvestorState {
+  final List<TopInvestor> stocksHoldingInvestors;
+
+  const StocksHoldingInvestorsLoaded({required this.stocksHoldingInvestors});
+}

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
@@ -10,6 +11,8 @@ import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart'
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  static const String routeName = RouteConfig.stocksList;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

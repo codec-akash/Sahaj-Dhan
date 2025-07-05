@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
+import 'package:sahaj_dhan/core/navigation/route_config.dart';
+import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/types/stock_holding_type.dart';
 import 'package:sahaj_dhan/core/utils/colors.dart';
@@ -15,6 +18,8 @@ class InvestorHoldingMain extends StatefulWidget {
     super.key,
     required this.investor,
   });
+
+  static const String routeName = RouteConfig.investorHolding;
 
   @override
   State<InvestorHoldingMain> createState() => _InvestorHoldingMainState();
@@ -55,7 +60,7 @@ class _InvestorHoldingMainState extends State<InvestorHoldingMain> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pop();
+                di<NavigationService>().pop();
               },
             ),
             actions: [
