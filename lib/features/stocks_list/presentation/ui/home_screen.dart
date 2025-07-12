@@ -54,8 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Column(
           children: [
-            HomePageButtons(),
-            SizedBox(height: 20.h),
             Row(
               children: [
                 Text(

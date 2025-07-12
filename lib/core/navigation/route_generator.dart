@@ -12,6 +12,7 @@ import 'package:sahaj_dhan/features/top_investors/presentation/screen/top_invest
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case RouteConfig.initial:
       case RouteConfig.longTerm:
         return MaterialPageRoute(
           builder: (_) => LongTermPageProvider(

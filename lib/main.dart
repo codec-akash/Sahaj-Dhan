@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeConfig.lightTheme(),
         navigatorKey: navigationService.navigationKey,
         onGenerateRoute: RouteGenerator.generateRoute,
-        initialRoute: RouteConfig.initial,
+        initialRoute: '/',
       ),
     );
   }
