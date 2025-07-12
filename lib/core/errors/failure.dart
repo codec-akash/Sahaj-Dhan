@@ -25,3 +25,11 @@ class ApiFailure extends Failure {
   factory ApiFailure.fromExpection(ApiException exception) =>
       ApiFailure(message: exception.message, errorCode: exception.errorCode);
 }
+
+class NetworkFailure extends Failure {
+  const NetworkFailure({required super.message, super.errorCode = -1});
+}
+
+class UpdateFailure extends Failure {
+  const UpdateFailure({required super.message, super.errorCode = -2});
+}

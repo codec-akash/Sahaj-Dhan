@@ -5,5 +5,5 @@ class RouteConfig {
   static const String stocksHoldingInvestors = '/stocks-holding-investors';
   static const String investorHolding = '/investor-holding';
 
-  static const String initial = longTerm;
+  static const String initial = '/';
 }

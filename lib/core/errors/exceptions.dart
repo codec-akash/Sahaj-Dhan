@@ -47,3 +47,8 @@ class InvalidInputException extends ApiException {
   const InvalidInputException(String message, int errorCode)
       : super(message: "Invalid Input: $message", errorCode: errorCode);
 }
+
+class UpdateException extends ApiException {
+  const UpdateException(String message, int errorCode)
+      : super(message: "Update Exception: $message", errorCode: errorCode);
+}

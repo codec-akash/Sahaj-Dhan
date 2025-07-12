@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
-import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/bloc/stocks_bloc.dart';
 import 'package:sahaj_dhan/features/stocks_list/presentation/ui/stock_card.dart';
 
@@ -54,9 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Column(
           children: [
-            SizedBox(height: 10.h),
-            HomePageButtons(),
-            SizedBox(height: 20.h),
             Row(
               children: [
                 Text(

@@ -5,6 +5,10 @@ import 'package:sahaj_dhan/core/extensions/context_extension.dart';
 import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
+import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_bloc.dart';
+import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_event.dart';
+import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_state.dart';
+import 'package:sahaj_dhan/features/app_update/presentation/widgets/update_card.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/entities/long_term_stocks.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/bloc/long_term_bloc.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/presentation/screen/long_term_stocks_datelist.dart';
@@ -33,6 +37,7 @@ class _LongTermMainState extends State<LongTermMain> {
 
   @override
   void initState() {
+    context.read<UpdateBloc>().add(CheckForUpdate());
     super.initState();
     _loadHodlStocks();
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
@@ -99,6 +104,34 @@ class _LongTermMainState extends State<LongTermMain> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
+          BlocBuilder<UpdateBloc, UpdateState>(
+            builder: (context, state) {
+              if (state is UpdateAvailable) {
+                return SliverToBoxAdapter(
+                  child: UpdateCard(
+                    updateInfo: state.updateInfo,
+                    onUpdate: () {
+                      context.read<UpdateBloc>().add(StartUpdate());
+                    },
+                    onDismiss: () {
+                      context.read<UpdateBloc>().add(DismissUpdate());
+                    },
+                  ),
+                );
+              }
+              if (state is UpdateDownloading) {
+                return SliverToBoxAdapter(
+                  child: UpdateCard(
+                    updateInfo: state.updateInfo,
+                    onUpdate: () {},
+                    onDismiss: () {},
+                  ),
+                );
+              }
+              return SliverToBoxAdapter(child: const SizedBox.shrink());
+            },
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10.h)),
           SliverToBoxAdapter(child: HomePageButtons()),
           SliverToBoxAdapter(child: SizedBox(height: 20.h)),
           SliverToBoxAdapter(

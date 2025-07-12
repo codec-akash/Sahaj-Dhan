@@ -23,7 +23,42 @@ import 'package:sahaj_dhan/features/top_investors/domain/usercases/get_top_inves
 import 'package:sahaj_dhan/features/top_investors/presentation/bloc/top_investor_bloc.dart';
 import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
 
+import '../../features/app_update/data/datasource/android_update_source.dart';
+import '../../features/app_update/data/datasource/update_data_source.dart';
+import '../../features/app_update/data/repository/update_repository_impl.dart';
+import '../../features/app_update/domain/repositories/update_repository.dart';
+import '../../features/app_update/domain/usecases/check_update_usecase.dart';
+import '../../features/app_update/domain/usecases/start_update_usecase.dart';
+import '../../features/app_update/presentation/bloc/update_bloc.dart';
+import '../../features/app_update/domain/usecases/get_update_status_usecase.dart';
+
 final di = GetIt.instance;
+
+void setupUpdateFeature() {
+  // Data Sources
+  di.registerLazySingleton<UpdateDataSource>(
+    () => AndroidUpdateDataSource(),
+  );
+
+  // Repositories
+  di.registerLazySingleton<UpdateRepository>(
+    () => UpdateRepositoryImpl(di()),
+  );
+
+  // Use Cases
+  di.registerLazySingleton(() => CheckUpdateUseCase(di()));
+  di.registerLazySingleton(() => StartUpdateUseCase(di()));
+  di.registerLazySingleton(() => GetUpdateStatusUseCase(di()));
+
+  // BLoC
+  di.registerFactory(
+    () => UpdateBloc(
+      checkUpdateUseCase: di(),
+      startUpdateUseCase: di(),
+      getUpdateStatusUseCase: di(),
+    ),
+  );
+}
 
 Future<void> init() async {
   // * Stocks Trade Data
@@ -71,4 +106,5 @@ Future<void> init() async {
 
   // Navigation
   di.registerLazySingleton<NavigationService>(() => NavigationServiceImpl());
+  setupUpdateFeature();
 }
