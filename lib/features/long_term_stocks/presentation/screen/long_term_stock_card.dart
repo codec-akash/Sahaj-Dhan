@@ -39,7 +39,7 @@ class LongTermStockCard extends StatelessWidget {
             stops: [0.7, 1.0],
             colors: [
               Colors.transparent,
-              longTermStocks.capitalGainColor.withOpacity(0.4),
+              longTermStocks.capitalGainColor.withValues(alpha: 0.4),
             ],
           ),
         ),

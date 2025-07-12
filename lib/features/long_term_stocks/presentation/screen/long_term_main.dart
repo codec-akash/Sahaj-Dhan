@@ -5,7 +5,6 @@ import 'package:sahaj_dhan/core/extensions/context_extension.dart';
 import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
 import 'package:sahaj_dhan/core/widgets/home_page_buttons.dart';
-import 'package:sahaj_dhan/features/app_update/domain/entities/update_info.dart';
 import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_bloc.dart';
 import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_event.dart';
 import 'package:sahaj_dhan/features/app_update/presentation/bloc/update_state.dart';
@@ -123,13 +122,7 @@ class _LongTermMainState extends State<LongTermMain> {
               if (state is UpdateDownloading) {
                 return SliverToBoxAdapter(
                   child: UpdateCard(
-                    updateInfo: UpdateInfo(
-                      currentVersion: '',
-                      newVersion: '',
-                      changelog: 'Downloading update...',
-                      isUpdateAvailable: true,
-                      installStatus: state.updateInfo.installStatus,
-                    ),
+                    updateInfo: state.updateInfo,
                     onUpdate: () {},
                     onDismiss: () {},
                   ),

@@ -14,17 +14,10 @@ class LongTermPageProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LongTermBloc>(
-          create: (context) => LongTermBloc(
-            getLongTermStocksUsecase: di(),
-            longTermStockService: di(),
-          ),
+          create: (context) => di<LongTermBloc>(),
         ),
         BlocProvider(
-          create: (context) => UpdateBloc(
-            checkUpdateUseCase: di(),
-            startUpdateUseCase: di(),
-            getUpdateStatusUseCase: di(),
-          ),
+          create: (context) => di<UpdateBloc>(),
         ),
       ],
       child: child,

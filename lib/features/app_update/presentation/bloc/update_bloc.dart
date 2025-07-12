@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:in_app_update/in_app_update.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/check_update_usecase.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/get_update_status_usecase.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/start_update_usecase.dart';
@@ -45,7 +44,6 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
     Emitter<UpdateState> emit,
   ) async {
     if (state is UpdateAvailable) {
-      final updateInfo = (state as UpdateAvailable).updateInfo;
       final result = await startUpdateUseCase();
       result.fold(
         (failure) => emit(UpdateError(failure.message)),

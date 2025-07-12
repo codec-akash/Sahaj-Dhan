@@ -27,11 +27,9 @@ class ApiFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  NetworkFailure({required String message, int errorCode = -1})
-      : super(message: message, errorCode: errorCode);
+  const NetworkFailure({required super.message, super.errorCode = -1});
 }
 
 class UpdateFailure extends Failure {
-  UpdateFailure({required String message, int errorCode = -2})
-      : super(message: message, errorCode: errorCode);
+  const UpdateFailure({required super.message, super.errorCode = -2});
 }

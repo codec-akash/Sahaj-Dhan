@@ -4,7 +4,6 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sahaj_dhan/core/errors/exceptions.dart';
 
-import '../../domain/entities/update_info.dart';
 import '../models/update_info_model.dart';
 import 'update_data_source.dart';
 

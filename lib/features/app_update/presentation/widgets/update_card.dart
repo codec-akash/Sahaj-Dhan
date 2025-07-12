@@ -31,8 +31,7 @@ class UpdateCard extends StatelessWidget {
       case InstallStatus.downloaded:
         return 'Update downloaded. Installing...';
       case InstallStatus.unknown:
-      default:
-        return '';
+        return 'Unknown status';
     }
   }
 
