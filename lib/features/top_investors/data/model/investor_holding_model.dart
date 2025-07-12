@@ -30,7 +30,7 @@ class InvestorMetricsModel extends InvestorMetrics {
       totalTrades: json['totalTrades'],
       profitableTrades: json['profitableTrades'],
       lossTrades: json['lossTrades'],
-      avgProfitLossRatio: json['avgProfitLossRatio'],
+      avgProfitLossRatio: json['avgProfitLossRatio'].toDouble(),
     );
   }
 
