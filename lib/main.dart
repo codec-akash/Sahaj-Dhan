@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sahaj_dhan/core/navigation/navigation_service.dart';
-import 'package:sahaj_dhan/core/navigation/route_config.dart';
 import 'package:sahaj_dhan/core/navigation/route_generator.dart';
 import 'package:sahaj_dhan/core/services/injection.dart';
 import 'package:sahaj_dhan/core/theme/theme_config.dart';
