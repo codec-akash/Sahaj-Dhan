@@ -25,3 +25,13 @@ class ApiFailure extends Failure {
   factory ApiFailure.fromExpection(ApiException exception) =>
       ApiFailure(message: exception.message, errorCode: exception.errorCode);
 }
+
+class NetworkFailure extends Failure {
+  NetworkFailure({required String message, int errorCode = -1})
+      : super(message: message, errorCode: errorCode);
+}
+
+class UpdateFailure extends Failure {
+  UpdateFailure({required String message, int errorCode = -2})
+      : super(message: message, errorCode: errorCode);
+}

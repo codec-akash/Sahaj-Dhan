@@ -10,12 +10,16 @@ class StocksListPageProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => StocksBloc(
-        getStockList: di(),
-        getStockFilter: di(),
-        stocksService: di(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => StocksBloc(
+            getStockList: di(),
+            getStockFilter: di(),
+            stocksService: di(),
+          ),
+        ),
+      ],
       child: child,
     );
   }
