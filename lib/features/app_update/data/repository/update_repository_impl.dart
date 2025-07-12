@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:sahaj_dhan/core/errors/failure.dart';
 import 'package:sahaj_dhan/core/utils/typedef.dart';
 import 'package:sahaj_dhan/features/app_update/data/datasource/update_data_source.dart';
@@ -24,12 +25,18 @@ class UpdateRepositoryImpl implements UpdateRepository {
   FutureResult<void> startUpdate() async {
     try {
       await dataSource.startUpdate();
-      return Right(null);
+      return const Right(null);
     } catch (e) {
       return Left(UpdateFailure(message: e.toString()));
     }
   }
 
   @override
-  Stream<double> getUpdateProgress() => dataSource.getUpdateProgress();
+  StreamResult<InstallStatus> getUpdateProgress() {
+    try {
+      return dataSource.getUpdateProgress().map((status) => Right(status));
+    } catch (e) {
+      return Stream.value(Left(UpdateFailure(message: e.toString())));
+    }
+  }
 }

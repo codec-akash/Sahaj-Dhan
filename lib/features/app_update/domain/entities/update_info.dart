@@ -1,22 +1,19 @@
 import 'package:equatable/equatable.dart';
-
-enum UpdateStatus { none, available, downloading, completed, error }
+import 'package:in_app_update/in_app_update.dart';
 
 class UpdateInfo extends Equatable {
   final String currentVersion;
   final String newVersion;
   final String changelog;
   final bool isUpdateAvailable;
-  final double downloadProgress;
-  final UpdateStatus status;
+  final InstallStatus installStatus;
 
   const UpdateInfo({
     required this.currentVersion,
     required this.newVersion,
     required this.changelog,
     required this.isUpdateAvailable,
-    this.downloadProgress = 0.0,
-    this.status = UpdateStatus.none,
+    this.installStatus = InstallStatus.unknown,
   });
 
   @override
@@ -25,8 +22,7 @@ class UpdateInfo extends Equatable {
         newVersion,
         changelog,
         isUpdateAvailable,
-        downloadProgress,
-        status,
+        installStatus,
       ];
 
   UpdateInfo copyWith({
@@ -34,16 +30,14 @@ class UpdateInfo extends Equatable {
     String? newVersion,
     String? changelog,
     bool? isUpdateAvailable,
-    double? downloadProgress,
-    UpdateStatus? status,
+    InstallStatus? installStatus,
   }) {
     return UpdateInfo(
       currentVersion: currentVersion ?? this.currentVersion,
       newVersion: newVersion ?? this.newVersion,
       changelog: changelog ?? this.changelog,
       isUpdateAvailable: isUpdateAvailable ?? this.isUpdateAvailable,
-      downloadProgress: downloadProgress ?? this.downloadProgress,
-      status: status ?? this.status,
+      installStatus: installStatus ?? this.installStatus,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:in_app_update/in_app_update.dart';
+
 import '../../domain/entities/update_info.dart';
 
 class UpdateInfoModel extends UpdateInfo {
@@ -6,8 +8,7 @@ class UpdateInfoModel extends UpdateInfo {
     required super.newVersion,
     required super.changelog,
     required super.isUpdateAvailable,
-    super.downloadProgress = 0.0,
-    super.status = UpdateStatus.none,
+    super.installStatus = InstallStatus.unknown,
   });
 
   factory UpdateInfoModel.fromJson(Map<String, dynamic> json) {
@@ -16,10 +17,9 @@ class UpdateInfoModel extends UpdateInfo {
       newVersion: json['newVersion'] as String,
       changelog: json['changelog'] as String,
       isUpdateAvailable: json['isUpdateAvailable'] as bool,
-      downloadProgress: (json['downloadProgress'] as num?)?.toDouble() ?? 0.0,
-      status: UpdateStatus.values.firstWhere(
-        (e) => e.toString() == json['status'],
-        orElse: () => UpdateStatus.none,
+      installStatus: InstallStatus.values.firstWhere(
+        (e) => e.toString() == json['installStatus'],
+        orElse: () => InstallStatus.unknown,
       ),
     );
   }
@@ -30,8 +30,6 @@ class UpdateInfoModel extends UpdateInfo {
       'newVersion': newVersion,
       'changelog': changelog,
       'isUpdateAvailable': isUpdateAvailable,
-      'downloadProgress': downloadProgress,
-      'status': status.toString(),
     };
   }
 }

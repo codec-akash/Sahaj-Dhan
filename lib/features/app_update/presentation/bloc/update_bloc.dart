@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/check_update_usecase.dart';
+import 'package:sahaj_dhan/features/app_update/domain/usecases/get_update_status_usecase.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/start_update_usecase.dart';
 
 import 'update_event.dart';
@@ -10,11 +12,13 @@ import 'update_state.dart';
 class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
   final CheckUpdateUseCase checkUpdateUseCase;
   final StartUpdateUseCase startUpdateUseCase;
-  StreamSubscription? _progressSubscription;
+  final GetUpdateStatusUseCase getUpdateStatusUseCase;
+  StreamSubscription? _statusSubscription;
 
   UpdateBloc({
     required this.checkUpdateUseCase,
     required this.startUpdateUseCase,
+    required this.getUpdateStatusUseCase,
   }) : super(UpdateInitial()) {
     on<CheckForUpdate>(_onCheckForUpdate);
     on<StartUpdate>(_onStartUpdate);
@@ -45,7 +49,23 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
       final result = await startUpdateUseCase();
       result.fold(
         (failure) => emit(UpdateError(failure.message)),
-        (_) => emit(UpdateDownloading(progress: 0.0, updateInfo: updateInfo)),
+        (_) {
+          // Start listening to installation status
+          _statusSubscription?.cancel();
+          _statusSubscription = getUpdateStatusUseCase().listen(
+            (result) => result.fold(
+              (failure) => emit(UpdateError(failure.message)),
+              (status) {
+                if (state is UpdateAvailable || state is UpdateDownloading) {
+                  final currentInfo = (state as dynamic).updateInfo;
+                  emit(UpdateDownloading(
+                    updateInfo: currentInfo.copyWith(installStatus: status),
+                  ));
+                }
+              },
+            ),
+          );
+        },
       );
     }
   }
@@ -54,12 +74,13 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
     DismissUpdate event,
     Emitter<UpdateState> emit,
   ) {
+    _statusSubscription?.cancel();
     emit(UpdateInitial());
   }
 
   @override
   Future<void> close() {
-    _progressSubscription?.cancel();
+    _statusSubscription?.cancel();
     return super.close();
   }
 }

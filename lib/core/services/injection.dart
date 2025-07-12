@@ -30,6 +30,7 @@ import '../../features/app_update/domain/repositories/update_repository.dart';
 import '../../features/app_update/domain/usecases/check_update_usecase.dart';
 import '../../features/app_update/domain/usecases/start_update_usecase.dart';
 import '../../features/app_update/presentation/bloc/update_bloc.dart';
+import '../../features/app_update/domain/usecases/get_update_status_usecase.dart';
 
 final di = GetIt.instance;
 
@@ -47,12 +48,14 @@ void setupUpdateFeature() {
   // Use Cases
   di.registerLazySingleton(() => CheckUpdateUseCase(di()));
   di.registerLazySingleton(() => StartUpdateUseCase(di()));
+  di.registerLazySingleton(() => GetUpdateStatusUseCase(di()));
 
   // BLoC
   di.registerFactory(
     () => UpdateBloc(
       checkUpdateUseCase: di(),
       startUpdateUseCase: di(),
+      getUpdateStatusUseCase: di(),
     ),
   );
 }

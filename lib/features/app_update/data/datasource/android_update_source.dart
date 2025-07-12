@@ -9,10 +9,16 @@ import '../models/update_info_model.dart';
 import 'update_data_source.dart';
 
 class AndroidUpdateDataSource implements UpdateDataSource {
-  final StreamController<double> _progressController;
+  final StreamController<InstallStatus> _statusController;
+  StreamSubscription? _installStatusSubscription;
 
   AndroidUpdateDataSource()
-      : _progressController = StreamController<double>.broadcast();
+      : _statusController = StreamController<InstallStatus>.broadcast() {
+    // Listen to install status updates
+    _installStatusSubscription = InAppUpdate.installUpdateListener.listen(
+      (status) => _statusController.add(status),
+    );
+  }
 
   @override
   Future<UpdateInfoModel> checkForUpdate() async {
@@ -30,10 +36,7 @@ class AndroidUpdateDataSource implements UpdateDataSource {
             : '',
         isUpdateAvailable: appUpdateInfo.updateAvailability ==
             UpdateAvailability.updateAvailable,
-        status: appUpdateInfo.updateAvailability ==
-                UpdateAvailability.updateAvailable
-            ? UpdateStatus.available
-            : UpdateStatus.none,
+        installStatus: InstallStatus.unknown,
       );
     } catch (e) {
       throw UpdateException('Failed to check for updates: $e', 500);
@@ -44,38 +47,13 @@ class AndroidUpdateDataSource implements UpdateDataSource {
   Future<void> startUpdate() async {
     try {
       await InAppUpdate.startFlexibleUpdate();
-      _progressController.add(0.0);
-      // Simulate progress for flexible update since the actual API doesn't provide progress
-      _simulateProgress();
     } catch (e) {
       throw UpdateException('Failed to start update: $e', 500);
     }
   }
 
   @override
-  Stream<double> getUpdateProgress() => _progressController.stream;
-
-  void _simulateProgress() {
-    double progress = 0.0;
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      progress += 0.1;
-      if (progress >= 1.0) {
-        timer.cancel();
-        _progressController.add(1.0);
-        _completeUpdate();
-      } else {
-        _progressController.add(progress);
-      }
-    });
-  }
-
-  Future<void> _completeUpdate() async {
-    try {
-      await InAppUpdate.completeFlexibleUpdate();
-    } catch (e) {
-      throw UpdateException('Failed to complete update: $e', 500);
-    }
-  }
+  Stream<InstallStatus> getUpdateProgress() => _statusController.stream;
 
   Future<String> _getCurrentVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -83,6 +61,7 @@ class AndroidUpdateDataSource implements UpdateDataSource {
   }
 
   void dispose() {
-    _progressController.close();
+    _installStatusSubscription?.cancel();
+    _statusController.close();
   }
 }

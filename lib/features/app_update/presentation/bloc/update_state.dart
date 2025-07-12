@@ -21,16 +21,14 @@ class UpdateAvailable extends UpdateState {
 }
 
 class UpdateDownloading extends UpdateState {
-  final double progress;
   final UpdateInfo updateInfo;
 
   const UpdateDownloading({
-    required this.progress,
     required this.updateInfo,
   });
 
   @override
-  List<Object?> get props => [progress, updateInfo];
+  List<Object?> get props => [updateInfo];
 }
 
 class UpdateError extends UpdateState {

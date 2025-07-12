@@ -1,3 +1,4 @@
+import 'package:in_app_update/in_app_update.dart';
 import 'package:sahaj_dhan/features/app_update/data/models/update_info_model.dart';
 
 abstract class UpdateDataSource {
@@ -7,6 +8,6 @@ abstract class UpdateDataSource {
   /// Starts the update process
   Future<void> startUpdate();
 
-  /// Gets the update download progress
-  Stream<double> getUpdateProgress();
+  /// Gets the update installation status
+  Stream<InstallStatus> getUpdateProgress();
 }

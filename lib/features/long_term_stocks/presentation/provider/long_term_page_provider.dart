@@ -23,6 +23,7 @@ class LongTermPageProvider extends StatelessWidget {
           create: (context) => UpdateBloc(
             checkUpdateUseCase: di(),
             startUpdateUseCase: di(),
+            getUpdateStatusUseCase: di(),
           ),
         ),
       ],
