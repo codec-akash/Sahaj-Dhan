@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/check_update_usecase.dart';
+import 'package:sahaj_dhan/features/app_update/domain/usecases/complete_update_usecase.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/get_update_status_usecase.dart';
 import 'package:sahaj_dhan/features/app_update/domain/usecases/start_update_usecase.dart';
 
@@ -12,16 +13,18 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
   final CheckUpdateUseCase checkUpdateUseCase;
   final StartUpdateUseCase startUpdateUseCase;
   final GetUpdateStatusUseCase getUpdateStatusUseCase;
-  StreamSubscription? _statusSubscription;
+  final CompleteUpdateUseCase completeUpdateUseCase;
 
   UpdateBloc({
     required this.checkUpdateUseCase,
     required this.startUpdateUseCase,
     required this.getUpdateStatusUseCase,
+    required this.completeUpdateUseCase,
   }) : super(UpdateInitial()) {
     on<CheckForUpdate>(_onCheckForUpdate);
     on<StartUpdate>(_onStartUpdate);
     on<DismissUpdate>(_onDismissUpdate);
+    on<CompleteUpdate>(_onCompleteUpdate);
   }
 
   Future<void> _onCheckForUpdate(
@@ -45,40 +48,33 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
   ) async {
     if (state is UpdateAvailable) {
       final result = await startUpdateUseCase();
+      add(CompleteUpdate());
       result.fold(
         (failure) => emit(UpdateError(failure.message)),
-        (_) {
-          // Start listening to installation status
-          _statusSubscription?.cancel();
-          _statusSubscription = getUpdateStatusUseCase().listen(
-            (result) => result.fold(
-              (failure) => emit(UpdateError(failure.message)),
-              (status) {
-                if (state is UpdateAvailable || state is UpdateDownloading) {
-                  final currentInfo = (state as dynamic).updateInfo;
-                  emit(UpdateDownloading(
-                    updateInfo: currentInfo.copyWith(installStatus: status),
-                  ));
-                }
-              },
-            ),
-          );
-        },
+        (_) => emit(UpdateDownloading(
+          updateInfo: (state as UpdateAvailable).updateInfo,
+        )),
       );
     }
+  }
+
+  Future<void> _onCompleteUpdate(
+    CompleteUpdate event,
+    Emitter<UpdateState> emit,
+  ) async {
+    final result = await completeUpdateUseCase();
+    result.fold(
+      (failure) => emit(UpdateError(failure.message)),
+      (_) => emit(UpdateDownloading(
+        updateInfo: (state as UpdateDownloading).updateInfo,
+      )),
+    );
   }
 
   void _onDismissUpdate(
     DismissUpdate event,
     Emitter<UpdateState> emit,
   ) {
-    _statusSubscription?.cancel();
     emit(UpdateInitial());
-  }
-
-  @override
-  Future<void> close() {
-    _statusSubscription?.cancel();
-    return super.close();
   }
 }

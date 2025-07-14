@@ -10,4 +10,7 @@ abstract class UpdateDataSource {
 
   /// Gets the update installation status
   Stream<InstallStatus> getUpdateProgress();
+
+  /// Completes the update installation
+  Future<void> completeUpdate();
 }

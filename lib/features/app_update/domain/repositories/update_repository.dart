@@ -12,4 +12,7 @@ abstract class UpdateRepository {
 
   /// Gets the update installation status
   StreamResult<InstallStatus> getUpdateProgress();
+
+  /// Completes the update installation
+  FutureResult<void> completeUpdate();
 }
