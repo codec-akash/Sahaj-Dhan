@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:sahaj_dhan/core/network/api_client.dart';
 import 'package:sahaj_dhan/core/network/network_helper.dart';
+import 'package:sahaj_dhan/features/app_update/domain/usecases/complete_update_usecase.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/data/datasource/lts_remote_data_source.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/data/repository/long_term_stock_repo_impl.dart';
 import 'package:sahaj_dhan/features/long_term_stocks/domain/repositories/long_term_stocks_repo.dart';
@@ -49,6 +50,7 @@ void setupUpdateFeature() {
   di.registerLazySingleton(() => CheckUpdateUseCase(di()));
   di.registerLazySingleton(() => StartUpdateUseCase(di()));
   di.registerLazySingleton(() => GetUpdateStatusUseCase(di()));
+  di.registerLazySingleton(() => CompleteUpdateUseCase(di()));
 
   // BLoC
   di.registerFactory(
@@ -56,6 +58,7 @@ void setupUpdateFeature() {
       checkUpdateUseCase: di(),
       startUpdateUseCase: di(),
       getUpdateStatusUseCase: di(),
+      completeUpdateUseCase: di(),
     ),
   );
 }

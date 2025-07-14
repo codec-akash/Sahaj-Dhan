@@ -39,4 +39,14 @@ class UpdateRepositoryImpl implements UpdateRepository {
       return Stream.value(Left(UpdateFailure(message: e.toString())));
     }
   }
+
+  @override
+  FutureResult<void> completeUpdate() async {
+    try {
+      await dataSource.completeUpdate();
+      return const Right(null);
+    } catch (e) {
+      return Left(UpdateFailure(message: e.toString()));
+    }
+  }
 }

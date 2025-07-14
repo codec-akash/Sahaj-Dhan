@@ -8,17 +8,6 @@ import '../models/update_info_model.dart';
 import 'update_data_source.dart';
 
 class AndroidUpdateDataSource implements UpdateDataSource {
-  final StreamController<InstallStatus> _statusController;
-  StreamSubscription? _installStatusSubscription;
-
-  AndroidUpdateDataSource()
-      : _statusController = StreamController<InstallStatus>.broadcast() {
-    // Listen to install status updates
-    _installStatusSubscription = InAppUpdate.installUpdateListener.listen(
-      (status) => _statusController.add(status),
-    );
-  }
-
   @override
   Future<UpdateInfoModel> checkForUpdate() async {
     try {
@@ -52,15 +41,21 @@ class AndroidUpdateDataSource implements UpdateDataSource {
   }
 
   @override
-  Stream<InstallStatus> getUpdateProgress() => _statusController.stream;
+  Stream<InstallStatus> getUpdateProgress() {
+    return InAppUpdate.installUpdateListener;
+  }
+
+  @override
+  Future<void> completeUpdate() async {
+    try {
+      await InAppUpdate.completeFlexibleUpdate();
+    } catch (e) {
+      throw UpdateException('Failed to complete update: $e', 500);
+    }
+  }
 
   Future<String> _getCurrentVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.buildNumber;
-  }
-
-  void dispose() {
-    _installStatusSubscription?.cancel();
-    _statusController.close();
   }
 }
