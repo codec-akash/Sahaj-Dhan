@@ -78,6 +78,20 @@ class LongTermStockCard extends StatelessWidget {
                         ]),
                   ),
                   SizedBox(height: 5.h),
+                  Text.rich(
+                    TextSpan(
+                        text: "Total Investment: ",
+                        style: CustomTextTheme.text12,
+                        children: [
+                          TextSpan(
+                            text:
+                                '${NumberUtils.addIndianCommas((double.tryParse(longTermStocks.averageBuyPrice) ?? 0) * (longTermStocks.quantity.toDouble()))} ${Strings.inr}',
+                            style: CustomTextTheme.text12
+                                .copyWith(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ),
+                  SizedBox(height: 5.h),
                   if (showClientName) ...[
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
